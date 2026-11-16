@@ -7,7 +7,7 @@ compatibility_flags = ["nodejs_compat"]
 # komennolla: npx wrangler kv namespace create PACKS
 [[kv_namespaces]]
 binding = "PACKS"
-id = "TAYTETAAN_KAYTTOONOTOSSA"
+id = "f5c1dad9905d457bb2e0bb4dd5859b2e"
 
 [vars]
 ALLOWED_ORIGIN = "https://astu26.github.io"
