@@ -138,8 +138,28 @@ td{padding:9px 8px;border-bottom:1px solid #eadbb9}
 <body>
 <div id="app"></div>
 
+<!-- ============ VERSIO: päivitä sama arvo tähän, version.txt:hen ja pakettien ?v=-parametreihin joka julkaisussa ============ -->
+<script>
+window.APP_VERSION = '2026-11-16b';
+(function(){
+  // Hakee version.txt:n ohi välimuistin. Jos julkaistu versio on uudempi, ladataan sivu uudella osoitteella (ohittaa vanhan kopion).
+  function check(){
+    try {
+      var last = +(sessionStorage.getItem('kp_upd') || 0);
+      if (Date.now() - last < 60000) return;
+      fetch('version.txt?t=' + Date.now(), {cache:'no-store'}).then(function(r){ return r.ok ? r.text() : ''; }).then(function(v){
+        v = (v || '').trim();
+        if (v && v !== window.APP_VERSION) { sessionStorage.setItem('kp_upd', String(Date.now())); location.replace(location.pathname + '?v=' + encodeURIComponent(v)); }
+      }).catch(function(){});
+    } catch(e){}
+  }
+  check();
+  document.addEventListener('visibilitychange', function(){ if (!document.hidden) check(); });
+})();
+</script>
+
 <!-- ============ SISÄLTÖPAKETIT: yksi tiedosto per koealue ============ -->
-<script src="packs/uskonto3-abraham-joosef.js"></script>
+<script src="packs/uskonto3-abraham-joosef.js?v=2026-11-16b"></script>
 
 <!-- ============ PELIMOOTTORI (sama kaikille aineille) ============ -->
 <script>
