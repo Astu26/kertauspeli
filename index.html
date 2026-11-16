@@ -132,6 +132,17 @@ td{padding:9px 8px;border-bottom:1px solid #eadbb9}
 .pk .ic{width:56px;height:56px;border-radius:16px;background:var(--blue);display:grid;place-items:center;font-size:30px;flex:none}
 .pk b{display:block;font-size:17px}
 .pk span{font-size:14px;color:var(--muted)}
+/* Uusi koe kuvista */
+.lbl{display:block;font-weight:700;margin:16px 2px 0;font-size:15px}
+.filebtn{text-align:center;cursor:pointer}
+.thumbs{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-top:10px}
+.thumbs img{width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:8px;display:block}
+.rq{background:var(--card);border-radius:14px;padding:10px 46px 10px 12px;margin-bottom:8px;position:relative;font-size:15px;line-height:1.35;box-shadow:0 2px 0 #e2cfa6}
+.rq .tag{margin-bottom:4px}
+.rq .ok{color:var(--green);font-weight:700}
+.rx{position:absolute;right:8px;top:8px;width:32px;height:32px;border-radius:50%;background:#fbe1de;color:var(--red);font-weight:800}
+.pulse{display:inline-block;animation:pulse 1.4s ease-in-out infinite}
+@keyframes pulse{50%{transform:scale(1.2) rotate(10deg)}}
 </style>
 </head>
 <body>
@@ -139,7 +150,9 @@ td{padding:9px 8px;border-bottom:1px solid #eadbb9}
 
 <!-- ============ VERSIO: päivitä sama arvo tähän, version.txt:hen ja pakettien ?v=-parametreihin joka julkaisussa ============ -->
 <script>
-window.APP_VERSION = '2026-11-16c';
+window.APP_VERSION = '2026-11-16d';
+// Palvelinfunktion osoite (Cloudflare Worker). Tyhjä = kuvista tekeminen ei ole vielä käytössä.
+window.KP_API = '';
 (function(){
   // Hakee version.txt:n ohi välimuistin. Jos julkaistu versio on uudempi, ladataan sivu uudella osoitteella (ohittaa vanhan kopion).
   function check(){
@@ -158,8 +171,8 @@ window.APP_VERSION = '2026-11-16c';
 </script>
 
 <!-- ============ SISÄLTÖPAKETIT: yksi tiedosto per koealue ============ -->
-<script src="pets.js?v=2026-11-16c"></script>
-<script src="packs/uskonto3-abraham-joosef.js?v=2026-11-16c"></script>
+<script src="pets.js?v=2026-11-16d"></script>
+<script src="packs/uskonto3-abraham-joosef.js?v=2026-11-16d"></script>
 
 <!-- ============ PELIMOOTTORI (sama kaikille aineille) ============ -->
 <script>
@@ -178,6 +191,31 @@ const store = {
   get(k){ try { return JSON.parse(localStorage.getItem(k) || 'null'); } catch(e){ return null; } },
   set(k,v){ try { localStorage.setItem(k, JSON.stringify(v)); } catch(e){} }
 };
+
+// ================= VERKOSTA HAETUT KOKEET (tehty kuvista sovelluksessa) =================
+const API = String(window.KP_API || '').replace(/\/+$/, '');
+let screen = '';
+function addRemote(list){
+  let changed = false;
+  (list || []).forEach(p => {
+    if (!p || !p.id || !Array.isArray(p.chapters)) return;
+    const np = Object.assign({remote:true}, p), i = PACKS.findIndex(x => x.id === p.id);
+    if (i < 0) { PACKS.push(np); changed = true; }
+    else if (PACKS[i].remote && JSON.stringify(PACKS[i]) !== JSON.stringify(np)) { PACKS[i] = np; changed = true; }
+  });
+  return changed;
+}
+function syncRemote(){
+  if (!API) return Promise.resolve();
+  return fetch(API + '/packs', {cache:'no-store'}).then(r => r.ok ? r.json() : null).then(d => {
+    if (!d || !Array.isArray(d.packs)) return;
+    store.set('kp_remote', d.packs);
+    let changed = false;
+    for (let i = PACKS.length-1; i >= 0; i--) if (PACKS[i].remote && !d.packs.some(p => p.id === PACKS[i].id)) { PACKS.splice(i,1); changed = true; }
+    if (addRemote(d.packs) || changed) { if (screen === 'main') mainHome(); }
+  }).catch(() => {});
+}
+addRemote(store.get('kp_remote'));
 
 // ================= LEMMIKKIKAUPPA (sama kaikille aineille) =================
 // [id, emoji, nimi, hinta]  · ruoissa viides arvo = montako ruokintaa
@@ -289,7 +327,7 @@ function hearts(em, n){
   const st = $('.stage'); if (!st) return;
   for (let i=0;i<n;i++){ const h = document.createElement('span'); h.className='heart'; h.textContent = em; h.style.left = (40 + Math.random()*20)+'%'; h.style.bottom = (60 + Math.random()*30)+'px'; h.style.animationDelay = (i*.12)+'s'; st.appendChild(h); setTimeout(() => h.remove(), 1800); }
 }
-function go(fn){ window.scrollTo(0,0); fn(); }
+function go(fn){ screen = ''; window.scrollTo(0,0); fn(); }
 
 // ================= LEMMIKKI =================
 function petHTML(small){
@@ -321,7 +359,10 @@ function chooseFirst(){
 
 function mainHome(){
   if (!G.pet.animal) return chooseFirst();
+  screen = 'main';
   const P = G.pet, lvl = petLevel();
+  const shown = PACKS.slice().sort((a,b) => String(b.created||'').localeCompare(String(a.created||'')));
+  const draft = store.get('kp_draft');
   app.innerHTML = `
     <div class="top"><span class="chip">💎 ${G.gems}</span><span class="chip">🔥 ${G.streak.n} pv</span></div>
     ${petHTML(false)}
@@ -331,11 +372,16 @@ function mainHome(){
       <button class="tile" data-shop="hat"><span class="e">🛍️</span>Kauppa</button>
     </div>
     <div class="sec">📚 Kokeet</div>
-    ${PACKS.map((p,i) => `<button class="pk" data-p="${i}"><span class="ic">${p.emoji||'📘'}</span><span><b>${esc(p.title)}</b><span>${esc(p.subtitle)} · ⭐ ${packStars(p)}/${p.chapters.length*3}</span></span></button>`).join('')}`;
+    ${shown.map(p => `<button class="pk" data-p="${esc(p.id)}"><span class="ic">${p.emoji||'📘'}</span><span><b>${esc(p.title)}</b><span>${esc(p.subtitle)} · ⭐ ${packStars(p)}/${p.chapters.length*3}</span></span></button>`).join('')}
+    ${API ? `<div class="sec">👨‍👩‍👧 Aikuiselle</div>
+      ${draft ? `<button class="big pink" id="drf">📝 Jatka tarkistusta: ${esc(draft.title||'uusi koe')}</button>` : ''}
+      <button class="big alt" id="newp">📷 Tee uusi koe kuvista</button>` : ''}`;
+  if ($('#newp')) $('#newp').onclick = () => go(() => newPack());
+  if ($('#drf')) $('#drf').onclick = () => go(() => review(store.get('kp_draft')));
   $('#nm').onclick = () => { const n = prompt('Lemmikin uusi nimi:', P.name); if (n && n.trim()) { P.name = n.trim().slice(0,16); saveG(); mainHome(); } };
   $('.pet').onclick = () => hearts('💖', 3);
   $$('[data-shop]').forEach(b => b.onclick = () => go(() => shop(b.dataset.shop)));
-  $$('[data-p]').forEach(b => b.onclick = () => { openPack(PACKS[+b.dataset.p]); go(packHome); });
+  $$('[data-p]').forEach(b => b.onclick = () => { openPack(PACKS.find(p => p.id === b.dataset.p)); go(packHome); });
 }
 
 function shop(cat, msg=''){
@@ -640,12 +686,154 @@ function parent(){
     <div class="sec">Vielä kertaamatta (${missed.length})</div>
     ${missed.length ? `<div class="mlist">${missed.map(q => `<div>${esc(q.type==='who'?'Kuka sanoi: ”'+q.text+'”':q.text)}<br><b>→ ${esc(q.answer)}</b></div>`).join('')}</div>` : '<p class="small">Ei virheitä jonossa.</p>'}
     <button class="big alt" id="rs" style="margin-top:24px">Nollaa tämän kokeen edistyminen</button>
-    <p class="small">Nollaus ei vie timantteja eikä lemmikin tavaroita.</p>`;
+    <p class="small">Nollaus ei vie timantteja eikä lemmikin tavaroita.</p>
+    ${PACK.remote && API ? `<button class="big alt" id="del" style="color:var(--red)">🗑️ Poista tämä koe kaikilta laitteilta</button><div class="msg" id="msg"></div>` : ''}`;
   $('#x').onclick = () => go(packHome);
   $('#rs').onclick = () => { if (confirm('Nollataanko tämän kokeen tähdet, kortit ja virheet?')) { S = defS(); save(); go(packHome); } };
+  if ($('#del')) $('#del').onclick = async () => {
+    if (!confirm(`Poistetaanko koe "${PACK.title}" kaikilta laitteilta? Tätä ei voi perua.`)) return;
+    const p = pinCode() || prompt('Aikuisen PIN-koodi:') || '';
+    try {
+      const r = await fetch(API + '/packs/' + encodeURIComponent(PACK.id), {method:'DELETE', headers:{'X-PIN': p}});
+      const d = await r.json().catch(() => ({}));
+      if (!r.ok) throw new Error(d.error || ('Virhe ' + r.status));
+      store.set('kp_pin', p); await syncRemote(); go(mainHome);
+    } catch(e) { $('#msg').textContent = '⚠️ ' + e.message; }
+  };
+}
+
+// ================= UUSI KOE KUVISTA (aikuiselle) =================
+const pinCode = () => store.get('kp_pin') || '';
+let pendingFiles = [];
+const TYPE = {mc:'Kysymys', koe:'⭐ Koekysymys', who:'Kuka sanoi?', tf:'Totta vai tarua?'};
+
+function shrink(file){
+  return new Promise((res, rej) => {
+    const img = new Image(), u = URL.createObjectURL(file);
+    img.onload = () => {
+      const s = Math.min(1, 1600 / Math.max(img.naturalWidth, img.naturalHeight));
+      const c = document.createElement('canvas');
+      c.width = Math.round(img.naturalWidth * s); c.height = Math.round(img.naturalHeight * s);
+      c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+      URL.revokeObjectURL(u);
+      res({media_type:'image/jpeg', data: c.toDataURL('image/jpeg', 0.85).split(',')[1]});
+    };
+    img.onerror = () => { URL.revokeObjectURL(u); rej(new Error('Kuvaa ei voitu lukea: ' + file.name)); };
+    img.src = u;
+  });
+}
+
+function newPack(msg='', meta={}){
+  app.innerHTML = `
+    <div class="top"><button class="back" id="x">← Takaisin</button></div>
+    <h2>📷 Uusi koe kuvista</h2>
+    <p class="small">Kuvaa koealueen sivut järjestyksessä. Tekoäly tekee niistä kertauskysymykset vain kuvien aineiston perusteella. Lue lisää -laatikot menevät bonukseksi. Tarkistat kysymykset ennen kuin ne näkyvät lapselle. Yksi koealue maksaa noin 0,50 €.</p>
+    <label class="lbl" for="subj">Aine</label><input class="namebox" id="subj" placeholder="esim. Ympäristöoppi" value="${esc(meta.subject||'')}">
+    <label class="lbl" for="ttl">Koealueen nimi (vapaaehtoinen)</label><input class="namebox" id="ttl" placeholder="esim. Vesi ja sen kiertokulku" value="${esc(meta.title||'')}">
+    <label class="lbl" for="notes">Lisätiedot (vapaaehtoinen)</label><input class="namebox" id="notes" placeholder="esim. 4. lk, kappaleet 3–6" value="${esc(meta.notes||'')}">
+    <label class="lbl">Kuvat (${pendingFiles.length}/40)</label>
+    <label class="big alt filebtn">📸 Lisää kuvia<input type="file" id="files" accept="image/*" multiple hidden></label>
+    <div class="thumbs" id="th"></div>
+    ${pendingFiles.length ? `<button class="big alt" id="clr" style="font-size:15px;padding:10px">Poista kuvat</button>` : ''}
+    <label class="lbl" for="pin">Aikuisen PIN-koodi</label><input class="namebox" id="pin" type="password" inputmode="numeric" autocomplete="off" value="${esc(pinCode())}">
+    <button class="big" id="go">✨ Tee treenit</button><div class="msg" id="msg">${msg}</div>`;
+  const metaNow = () => ({subject: $('#subj').value.trim(), title: $('#ttl').value.trim(), notes: $('#notes').value.trim()});
+  pendingFiles.forEach(f => { const im = document.createElement('img'); im.src = URL.createObjectURL(f); $('#th').appendChild(im); });
+  $('#x').onclick = () => go(mainHome);
+  $('#files').onchange = e => { pendingFiles = pendingFiles.concat(Array.from(e.target.files || [])).slice(0, 40); newPack('', metaNow()); };
+  if ($('#clr')) $('#clr').onclick = () => { pendingFiles = []; newPack('', metaNow()); };
+  $('#go').onclick = async () => {
+    const meta = metaNow(), p = $('#pin').value.trim();
+    if (!pendingFiles.length) { $('#msg').textContent = 'Lisää ensin kuvat koealueesta.'; return; }
+    if (!p) { $('#msg').textContent = 'Kirjoita PIN-koodi.'; return; }
+    store.set('kp_pin', p);
+    $('#go').disabled = true; $('#msg').textContent = 'Pienennetään kuvia…';
+    try {
+      const images = [];
+      for (const f of pendingFiles) images.push(await shrink(f));
+      generateView(images, meta);
+    } catch(e) { $('#go').disabled = false; $('#msg').textContent = '⚠️ ' + e.message; }
+  };
+}
+
+async function generateView(images, meta){
+  screen = 'gen';
+  const t0 = Date.now(); let prog = 0, draft = null, err = null;
+  app.innerHTML = `<div class="center" style="padding-top:60px"><div class="huge"><span class="pulse">✨</span></div><h2>Tehdään treenejä…</h2>
+    <p class="sub" id="st">Lähetetään ${images.length} kuvaa…</p>
+    <p class="small">Tämä kestää yleensä 1–3 minuuttia. Pidä sovellus auki ja näyttö päällä.</p></div>`;
+  const timer = setInterval(() => { const el = $('#st'); if (el) el.textContent = `Tekoäly lukee kuvia ja kirjoittaa kysymyksiä… ${Math.round((Date.now()-t0)/1000)} s${prog ? ' · ' + prog + ' merkkiä' : ''}`; }, 1000);
+  try {
+    const r = await fetch(API + '/generate', {method:'POST', headers:{'Content-Type':'application/json','X-PIN': pinCode()}, body: JSON.stringify(Object.assign({}, meta, {images}))});
+    if (!r.ok) { const d = await r.json().catch(() => ({})); throw new Error(d.error || ('Virhe ' + r.status)); }
+    const reader = r.body.getReader(), dec = new TextDecoder(); let buf = '';
+    for (;;) {
+      const {value, done} = await reader.read(); if (done) break;
+      buf += dec.decode(value, {stream:true}); let i;
+      while ((i = buf.indexOf('\n')) >= 0) {
+        const line = buf.slice(0, i).trim(); buf = buf.slice(i+1); if (!line) continue;
+        const o = JSON.parse(line);
+        if (o.progress != null) prog = o.progress;
+        if (o.draft) draft = o.draft;
+        if (o.error) err = o.error;
+      }
+    }
+  } catch(e) { err = e.message || String(e); }
+  clearInterval(timer);
+  if (err || !draft) { if (/PIN/.test(err || '')) store.set('kp_pin', ''); return newPack('⚠️ ' + (err || 'Vastaus jäi tyhjäksi. Yritä uudelleen.'), meta); }
+  pendingFiles = [];
+  store.set('kp_draft', draft);
+  go(() => review(draft));
+}
+
+function review(d){
+  if (!d) return mainHome();
+  screen = 'review';
+  const save = () => store.set('kp_draft', d);
+  const qline = (q, path) => `<div class="rq"><button class="rx" data-del="${path}" aria-label="Poista">✕</button>
+    <span class="tag ${q.type==='koe'?'koe':''}">${TYPE[q.type]||q.type}</span>
+    <div><b>${q.type==='who' ? '”' + esc(q.text) + '”' : esc(q.text)}</b></div>
+    <div class="ok">✓ ${esc(q.answer)}</div>
+    ${q.wrong && q.wrong.length ? `<div class="small">✗ ${q.wrong.map(esc).join(' · ')}</div>` : ''}
+    ${q.explain ? `<div class="small">💬 ${esc(q.explain)}</div>` : ''}
+    <div class="small">📍 ${esc(q.source||'')}</div></div>`;
+  const total = d.chapters.reduce((s,c) => s + c.questions.length, 0);
+  app.innerHTML = `
+    <div class="top"><button class="back" id="x">← Takaisin</button><span class="chip">${total} kysymystä</span></div>
+    <h2>Tarkista: ${esc(d.title)}</h2><p class="sub">${esc(d.subtitle)}</p>
+    ${d.warnings && d.warnings.length ? `<div class="fb no"><b>Huomioita kuvista:</b><br>${d.warnings.map(esc).join('<br>')}</div>` : ''}
+    <p class="small">Poista ✕-napista kysymykset, jotka ovat väärin tai eivät kuulu kokeeseen. Tarkista, että oikeat vastaukset löytyvät kirjasta (📍 kertoo kohdan).</p>
+    ${d.chapters.map((c,ci) => `<div class="sec">${esc(c.emoji)} ${c.number ? c.number + '. ' : ''}${esc(c.title)} (${c.questions.length})</div>
+      ${c.questions.map((q,qi) => qline(q, `c.${ci}.questions.${qi}`)).join('')}
+      ${c.bonus_questions.length ? `<p class="small" style="margin:12px 2px 6px"><b>💡 Bonus (Lue lisää)</b></p>` + c.bonus_questions.map((q,qi) => qline(q, `c.${ci}.bonus_questions.${qi}`)).join('') : ''}`).join('')}
+    ${d.timeline.length ? `<div class="sec">📜 Aikajana</div>` + d.timeline.map((t,i) => `<div class="rq"><button class="rx" data-del="t.${i}">✕</button>${i+1}. ${esc(t)}</div>`).join('') : ''}
+    ${d.characters.length ? `<div class="sec">🕵️ Hahmot</div>` + d.characters.map((c,i) => `<div class="rq"><button class="rx" data-del="h.${i}">✕</button><b>${esc(c.emoji)} ${esc(c.name)}</b>${c.clues.map(x => `<div class="small">• ${esc(x)}</div>`).join('')}</div>`).join('') : ''}
+    ${d.words.length ? `<div class="sec">🧩 Sanaparit</div>` + d.words.map((w,i) => `<div class="rq"><button class="rx" data-del="w.${i}">✕</button><b>${esc(w.term)}</b>${w.bonus ? ' 💡' : ''}<div class="small">${esc(w.definition)}</div></div>`).join('') : ''}
+    <button class="big" id="pub">✅ Julkaise lapselle</button>
+    <button class="big alt" id="drop" style="color:var(--red)">Hylkää luonnos</button><div class="msg" id="msg"></div>`;
+  $('#x').onclick = () => go(mainHome);
+  $$('[data-del]').forEach(b => b.onclick = () => {
+    const p = b.dataset.del.split('.'), y = window.scrollY;
+    if (p[0] === 'c') d.chapters[+p[1]][p[2]].splice(+p[3], 1);
+    if (p[0] === 't') d.timeline.splice(+p[1], 1);
+    if (p[0] === 'h') d.characters.splice(+p[1], 1);
+    if (p[0] === 'w') d.words.splice(+p[1], 1);
+    save(); review(d); window.scrollTo(0, y);
+  });
+  $('#drop').onclick = () => { if (confirm('Hylätäänkö luonnos? Kysymykset katoavat.')) { store.set('kp_draft', null); go(mainHome); } };
+  $('#pub').onclick = async () => {
+    $('#pub').disabled = true; $('#msg').textContent = 'Julkaistaan…';
+    try {
+      const r = await fetch(API + '/publish', {method:'POST', headers:{'Content-Type':'application/json','X-PIN': pinCode()}, body: JSON.stringify({draft: d})});
+      const res = await r.json().catch(() => ({}));
+      if (!r.ok) throw new Error(res.error || ('Virhe ' + r.status));
+      store.set('kp_draft', null); await syncRemote(); confetti(); go(mainHome);
+    } catch(e) { $('#pub').disabled = false; $('#msg').textContent = '⚠️ ' + e.message; }
+  };
 }
 
 mainHome();
+syncRemote();
 })();
 </script>
 </body>

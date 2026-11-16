@@ -1,0 +1,15 @@
+{
+  "name": "kertauspeli-api",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev --var MOCK:1 --var PARENT_PIN:1234",
+    "deploy": "wrangler deploy"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "latest"
+  },
+  "devDependencies": {
+    "wrangler": "latest"
+  }
+}

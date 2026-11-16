@@ -1,0 +1,13 @@
+name = "kertauspeli-api"
+main = "src/index.js"
+compatibility_date = "2026-11-01"
+compatibility_flags = ["nodejs_compat"]
+
+# Julkaistut kokeet ja PIN-yritysten laskuri. id täytetään käyttöönotossa
+# komennolla: npx wrangler kv namespace create PACKS
+[[kv_namespaces]]
+binding = "PACKS"
+id = "TAYTETAAN_KAYTTOONOTOSSA"
+
+[vars]
+ALLOWED_ORIGIN = "https://astu26.github.io"
