@@ -17,6 +17,7 @@ html,body{margin:0;background:#f3dfb5;color:var(--ink)}
 body{background:linear-gradient(#f9edd4,#efd7a6) fixed;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Rounded",system-ui,sans-serif;-webkit-tap-highlight-color:transparent;min-height:100vh;-webkit-text-size-adjust:100%}
 #app{max-width:560px;margin:0 auto;padding:calc(env(safe-area-inset-top) + 12px) 16px calc(env(safe-area-inset-bottom) + 28px)}
 button{font:inherit;color:inherit;border:0;cursor:pointer;-webkit-user-select:none;user-select:none}
+input{font:inherit}
 .top{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:12px}
 .chip{background:#ffffffaa;border-radius:999px;padding:6px 12px;font-weight:700;font-size:15px;white-space:nowrap}
 .back{background:#ffffffaa;border-radius:999px;padding:8px 14px;font-weight:800}
@@ -26,6 +27,7 @@ h2{font-size:22px;margin:6px 0 10px;color:var(--blue2)}
 .path{display:flex;flex-direction:column;gap:12px;margin:8px 0 8px}
 .node{display:flex;align-items:center;gap:14px;background:var(--card);border-radius:20px;padding:12px 14px;box-shadow:0 3px 0 #d9bf8a;text-align:left;width:100%}
 .node:nth-child(even){margin-left:26px;width:calc(100% - 26px)}
+.path.flat .node{margin-left:0;width:100%}
 .node .ic{width:52px;height:52px;border-radius:50%;background:var(--blue);color:#fff;display:grid;place-items:center;font-size:26px;flex:none}
 .node.full .ic{background:var(--gold)}
 .node .nm{font-weight:800;font-size:16px;line-height:1.25}
@@ -54,12 +56,14 @@ h2{font-size:22px;margin:6px 0 10px;color:var(--blue2)}
 .fb.ok{background:#dff3e6}.fb.no{background:#fbe1de}
 .big{display:block;width:100%;background:var(--blue);color:#fff;font-weight:800;font-size:18px;padding:16px;border-radius:18px;box-shadow:0 4px 0 var(--blue2);margin-top:14px}
 .big.alt{background:#fff;color:var(--blue2);box-shadow:0 4px 0 #d6c7a8}
+.big.pink{background:#e2558f;box-shadow:0 4px 0 #a8326a}
 .spk{float:right;background:#e3e9f7;border-radius:50%;width:40px;height:40px;font-size:18px;margin:-4px -4px 6px 8px}
 .shake{animation:sh .35s}
 @keyframes sh{20%,60%{transform:translateX(-7px)}40%,80%{transform:translateX(7px)}}
 .center{text-align:center}
 .huge{font-size:64px;margin:10px 0 0}
 .stars{font-size:46px;letter-spacing:6px;color:#e0a000}
+.gain{display:inline-block;background:#fff;border-radius:99px;padding:6px 14px;font-weight:800;font-size:18px;margin:4px 0 10px}
 .slot{border:2px dashed #c9ad77;border-radius:14px;padding:11px 12px;min-height:46px;color:var(--muted);font-size:15px;display:flex;gap:10px;align-items:center;margin-bottom:8px}
 .slot b{flex:none;width:26px;height:26px;border-radius:50%;background:#e6d3ab;display:grid;place-items:center;font-size:14px;color:var(--ink)}
 .slot.done{border-style:solid;border-color:var(--green);background:#dff3e6;color:var(--ink);font-weight:600}
@@ -88,192 +92,59 @@ td{padding:9px 8px;border-bottom:1px solid #eadbb9}
 .mlist{background:var(--card);border-radius:14px;padding:4px 12px}
 .mlist div{padding:9px 0;border-bottom:1px solid #eadbb9;font-size:14.5px;line-height:1.35}
 .mlist div:last-child{border:0}
+/* Lemmikki */
+.stage{position:relative;height:250px;border-radius:24px;overflow:hidden;background:linear-gradient(#bfe3ff 0 64%,#9fd67a 64%);box-shadow:0 4px 0 #d9bf8a}
+.stage.sm{height:190px}
+.stage .sun{position:absolute;left:14px;top:10px;font-size:34px}
+.stage .cloud{position:absolute;right:30%;top:16px;font-size:30px;opacity:.9}
+.st-home{position:absolute;right:8px;bottom:30px;font-size:92px;line-height:1}
+.stage.sm .st-home{font-size:70px}
+.st-veh{position:absolute;left:10px;bottom:14px;font-size:56px;line-height:1}
+.stage.sm .st-veh{font-size:44px}
+.pet{position:absolute;left:50%;bottom:24px;line-height:1;transform:translateX(-50%);animation:bob 2.4s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-7px)}}
+.pet .pa{display:block}
+.pet .ph{position:absolute;top:-.4em;left:50%;transform:translateX(-50%) rotate(-10deg);font-size:.55em}
+.pet .pg{position:absolute;top:.2em;left:50%;transform:translateX(-50%);font-size:.42em}
+.pet .po{position:absolute;bottom:-.16em;left:50%;transform:translateX(-50%);font-size:.42em}
+.heart{position:absolute;font-size:30px;pointer-events:none;animation:rise 1.4s ease-out forwards;z-index:3}
+@keyframes rise{to{transform:translateY(-120px) scale(1.4);opacity:0}}
+.petbar{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:12px 2px 4px}
+.petname{background:none;font-weight:800;font-size:20px;color:var(--blue2);padding:0;text-align:left}
+.lvl{font-size:14px;color:var(--muted);text-align:right}
+.tabs{display:flex;gap:8px;overflow-x:auto;padding:4px 2px 10px;margin:12px -2px 4px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex:none;background:#ffffffaa;border-radius:99px;padding:9px 14px;font-weight:800;font-size:15px}
+.tab.on{background:var(--blue);color:#fff}
+.shop{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.item{background:var(--card);border-radius:18px;padding:10px 6px 9px;box-shadow:0 3px 0 #d9bf8a;text-align:center;position:relative}
+.item .e{font-size:40px;display:block;line-height:1.15}
+.item .n{display:block;font-size:13px;font-weight:700;margin:3px 0 2px;line-height:1.2;min-height:2.4em}
+.item .p{display:inline-block;font-size:13px;font-weight:800;border-radius:99px;padding:3px 8px;background:#fff}
+.item.own .p{background:#e3e9f7;color:var(--blue2)}
+.item.on{outline:3px solid var(--green);outline-offset:-3px}
+.item.on .p{background:var(--green);color:#fff}
+.item.poor{opacity:.55}
+.msg{min-height:22px;margin:4px 2px 8px;font-weight:700;color:var(--blue2);font-size:15px}
+.namebox{width:100%;font-size:20px;padding:14px;border-radius:16px;border:2px solid #d6c7a8;background:#fff;margin-top:8px}
+.pick{font-size:52px;background:var(--card);border-radius:20px;padding:14px 0;box-shadow:0 3px 0 #d9bf8a}
+.pick.sel{outline:4px solid var(--blue);outline-offset:-4px;background:#fff}
+.pk{display:flex;align-items:center;gap:14px;background:var(--card);border-radius:20px;padding:14px;box-shadow:0 3px 0 #d9bf8a;text-align:left;width:100%;margin-bottom:12px}
+.pk .ic{width:56px;height:56px;border-radius:16px;background:var(--blue);display:grid;place-items:center;font-size:30px;flex:none}
+.pk b{display:block;font-size:17px}
+.pk span{font-size:14px;color:var(--muted)}
 </style>
 </head>
 <body>
 <div id="app"></div>
 
-<!-- ============ SISÄLTÖPAKETTI (vaihtuu koealueen mukaan) ============ -->
-<script>
-const PACK = {
-  id: "uskonto3-abraham-joosef",
-  title: "Abrahamista Joosefiin",
-  subtitle: "Uskonto, 3. lk · kappaleet 4–10",
-  // Kysymysrivit: ["mc"|"koe"|"who", kysymys/lainaus, oikea, [väärät], selitys]  tai  ["tf", väite, true/false, selitys]
-  // q = pääsisältö (leipäteksti + Tärkeää), bonus = Lue lisää -laatikot (eivät vaikuta tähtiin eivätkä harjoituskokeeseen)
-  chapters: [
-    { id:"k4", no:4, emoji:"⛺", title:"Abraham lähtee matkalle", cards:["Abraham"], q:[
-      ["mc","Missä Abraham asui aluksi?","Mesopotamiassa",["Egyptissä","Kanaaninmaassa","Roomassa"],"Abraham asui Mesopotamiassa, ennen kuin Jumala käski hänen lähteä."],
-      ["mc","Miksi Abraham oli murheellinen, vaikka hän oli rikas?","Hänellä ei ollut omaa lasta",["Hänen kamelinsa karkasivat","Hän oli sairas","Hänellä ei ollut kotia"],"Abrahamilla oli paljon eläimiä, mutta ei omaa lasta."],
-      ["who","Lähde siihen maahan, jonka minä sinulle osoitan.","Jumala",["Saara","Iisak","Farao"],"Jumala antoi Abrahamille tehtävän: lähde matkaan."],
-      ["mc","Mitä Jumala lupasi Abrahamille?","Hänestä tulee suuren kansan isä",["Hänestä tulee kuningas","Hän saa arkullisen kultaa","Hän ei koskaan vanhene"],"Jumala lupasi tehdä Abrahamista suuren kansan isän."],
-      ["mc","Mihin maahan Abraham muutti?","Kanaaninmaahan",["Egyptiin","Harraniin","Mesopotamiaan"],"Abraham ja Saara saapuivat pitkän matkan jälkeen Kanaaninmaahan."],
-      ["mc","Kenen kanssa Abraham lähti matkaan?","Vaimonsa Saaran ja palvelijoidensa",["Yksin","Poikansa Iisakin kanssa","Faraon kanssa"],"Abraham otti mukaan Saaran, palvelijat ja kaiken omaisuutensa."],
-      ["tf","Abraham jätti kaiken omaisuutensa kotiin.",false,"Tarua! Abraham otti mukaan kaiken omaisuutensa."],
-      ["tf","Matkalla Abraham ja hänen väkensä pystyttivät iltaisin telttansa.",true,"Totta! He vaelsivat päivisin ja pysähtyivät iltaisin."],
-      ["mc","Jumala lupasi, että Abrahamin jälkeläisiä tulee enemmän kuin…","hiekanjyviä maassa tai tähtiä taivaalla",["kaloja meressä","puita metsässä","lampaita laitumella"],"Jälkeläisiä tulee enemmän kuin hiekanjyviä tai tähtiä!"],
-      ["koe","Mistä voit päätellä, että Abraham luotti Jumalaan?","Hän lähti matkaan Jumalan käskystä, vaikka hänellä ei ollut omaa lasta",["Hän nauroi Jumalan puheille","Hän jäi kotiin odottamaan","Hän osti lisää kameleita"],"Abraham ihmetteli, miten hänestä voisi tulla suuren kansan isä ilman lasta. Mutta hän luotti Jumalaan ja halusi noudattaa hänen tahtoaan."]
-    ], bonus:[
-      ["mc","Miksi paimentolaiset asuivat teltoissa?","He muuttivat usein sinne, mistä karjalle löytyi ruokaa ja vettä",["Teltat olivat kauniimpia kuin talot","He eivät osanneet rakentaa taloja","Kuningas kielsi talot"],"Paimentolaiset kulkivat karjan perässä paikasta toiseen."],
-      ["mc","Mitä paimentolaiset tekivät eläinten nahasta, villasta ja luista?","Vaatteita, peitteitä ja telttakankaita",["Leipää","Kolikoita","Laivoja"],"Eläimistä saatiin ruokaa, maitoa ja tarvikkeita."],
-    ]},
-    { id:"k5", no:5, emoji:"👶", title:"Lupaus täyttyy", cards:["Saara","Hagar","Ismael"], q:[
-      ["mc","Kuka oli Hagar?","Saaran palvelijatar",["Abrahamin sisko","Jaakobin äiti","Faraon tytär"],"Hagar oli Saaran palvelijatar."],
-      ["mc","Mikä oli Abrahamin ja Hagarin pojan nimi?","Ismael",["Iisak","Esau","Joosef"],"Hagar synnytti pojan, jonka nimeksi tuli Ismael."],
-      ["mc","Kuinka monta vierasta miestä tuli Abrahamin teltalle?","Kolme",["Kaksi","Seitsemän","Kaksitoista"],"Abraham huomasi kolmen miehen lähestyvän."],
-      ["who","Älkää kulkeko telttani ohi. Tulkaa vieraakseni.","Abraham",["Saara","Hagar","Jumala"],"Abraham kutsui vieraat ystävällisesti luokseen."],
-      ["who","Vuoden päästä palaan luoksesi. Silloin vaimollasi on poika.","Yksi vieraista miehistä",["Abraham","Saara","Hagar"],"Yksi vieraista lupasi, että Saara saa pojan."],
-      ["mc","Mitä Saara teki, kun hän kuuli saavansa pojan?","Nauroi",["Itki","Lauloi","Juoksi pois"],"Saara nauroi, koska ei uskonut sitä."],
-      ["mc","Mikä oli Abrahamin ja Saaran pojan nimi?","Iisak",["Ismael","Jaakob","Benjamin"],"Saara synnytti Iisakin, ja Abraham järjesti suuret juhlat."],
-      ["mc","Missä Abraham tarjosi vieraille ruokaa?","Tammipuun varjossa",["Teltan sisällä","Kaivon luona","Joen rannalla"],"Abraham vei vieraat tammipuun varjoon."],
-      ["tf","Abraham halusi itse ajaa Ismaelin pois.",false,"Tarua! Saara vaati sitä. Abraham ei olisi halunnut."],
-      ["who","Tee niin kuin Saara sanoo. Lähetä Ismael turvallisin mielin pois. Minä huolehdin hänestä.","Jumala",["Hagar","Iisak","Yksi vieraista"],"Jumala lupasi huolehtia Ismaelista."],
-      ["mc","Mitä Abraham antoi Hagarille matkaan?","Leipää ja vesileilin",["Kultaa ja hopeaa","Kamelin","Teltan"],"Varhain aamulla Abraham antoi leipää ja vesileilin."],
-      ["tf","Abraham sai kaksi poikaa: Ismaelin ja Iisakin.",true,"Totta!"],
-      ["koe","Mistä voit päätellä, että Saara ei luottanut Jumalaan?","Hän nauroi, kun vieras sanoi, että hän saa pojan",["Hän leipoi vieraille leipää","Hän meni telttaan","Hän lähti matkaan Abrahamin kanssa"],"Saara nauroi, koska ei uskonut, että Jumalalle kaikki on mahdollista."]
-    ], bonus:[
-      ["mc","Minkä uskonnon kantaisänä Ismaelia pidetään?","Islaminuskon",["Egyptiläisten uskonnon","Paimentolaisten uskonnon","Faraon uskonnon"],"Ismaelia pidetään islaminuskon kantaisänä."],
-      ["mc","Mitä islamin kannattajia kutsutaan?","Muslimeiksi",["Kristityiksi","Paimentolaisiksi","Faraoiksi"],"Islam on maailman toiseksi suurin uskonto kristinuskon jälkeen."],
-    ]},
-    { id:"k6", no:6, emoji:"🐐", title:"Jaakobin petos", cards:["Iisak","Rebekka","Esau"], q:[
-      ["mc","Kenen kanssa Iisak meni naimisiin?","Rebekan",["Saaran","Hagarin","Dinan"],"Iisak ja Rebekka saivat kaksospojat."],
-      ["mc","Kumpi kaksosista oli esikoinen?","Esau",["Jaakob","Joosef","Ismael"],"Esikoinen sai nimekseen Esau. Toiselle pojalle annettiin nimeksi Jaakob."],
-      ["mc","Millainen Esau oli?","Taitava metsästäjä ja isän suosikki",["Hiljainen ja viihtyi kotona","Äidin suosikki","Unien selittäjä"],"Iisak söi mielellään Esaun tuomaa riistaa."],
-      ["mc","Millainen Jaakob oli?","Rauhallinen ja hiljainen, äidilleen rakas",["Taitava metsästäjä","Isän suosikki","Kuningas"],"Jaakob viihtyi kotona."],
-      ["who","Hae minulle kaksi nuorta vuohta. Valmistan niistä isäsi mieliruokaa.","Rebekka",["Iisak","Esau","Saara"],"Rebekka keksi suunnitelman Jaakobin kanssa."],
-      ["who","Ääni on Jaakobin ääni, mutta kädet ovat Esaun kädet.","Iisak",["Rebekka","Esau","Abraham"],"Iisak ihmetteli, mutta siunasi Jaakobin."],
-      ["mc","Miksi Iisak ei tunnistanut Jaakobia?","Iisak oli melkein sokea ja Jaakobilla oli Esaun vaatteet",["Oli pimeä yö","Jaakob oli naamioitunut eläimeksi","Iisak oli nukkumassa"],"Jaakob puki päälleen Esaun vaatteet."],
-      ["tf","Iisak pystyi perumaan siunauksensa.",false,"Tarua! Siunausta ei voinut enää perua."],
-      ["mc","Miksi Jaakob lähti pakomatkalle?","Rebekka pelkäsi, että Esau tappaa veljensä",["Hän halusi nähdä Egyptin","Iisak ajoi hänet pois","Hän etsi kadonnutta vuohta"],"Esau oli raivoissaan, joten Rebekka lähetti Jaakobin pois."],
-      ["koe","Miksi Rebekka halusi, että Jaakob saa esikoisen oikeudet?","Jaakob oli hänelle hyvin rakas",["Esau pyysi sitä","Jumala käski hänen huijata","Iisak halusi niin"],"Jaakob viihtyi kotona ja oli äidilleen hyvin rakas."]
-    ], bonus:[
-      ["mc","Mitä esikoinen sai isän kuoltua?","Hänestä tuli suvun johtaja ja hän sai kaksinkertaisen perinnön",["Ei mitään","Hänestä tuli farao","Hän sai muuttaa Egyptiin"],"Esikoinen oli perheen vanhin poika."],
-      ["tf","Kanaaninmaassa tytöt perivät yhtä paljon kuin pojat.",false,"Tarua! Tytöt eivät perineet mitään."],
-    ]},
-    { id:"k7", no:7, emoji:"🤝", title:"Jaakob ja Esau tekevät sovinnon", cards:["Jaakob"], q:[
-      ["mc","Missä kaupungissa Jaakob asui monta vuotta?","Harranissa",["Egyptissä","Mesopotamiassa","Jerusalemissa"],"Jaakob asui Harranissa enonsa luona."],
-      ["mc","Kenen luona Jaakob asui Harranissa?","Enonsa luona",["Esaun luona","Faraon luona","Abrahamin luona"],"Jaakob asui enonsa luona, teki ahkerasti töitä ja perusti perheen."],
-      ["tf","Jaakobista tuli Harranissa köyhä mies.",false,"Tarua! Hänestä tuli varakas mies, jolla oli paljon eläimiä."],
-      ["mc","Miksi Jaakob lähti takaisin Kanaaninmaahan?","Hän kaipasi kotiinsa",["Hänet ajettiin pois","Hän halusi riidellä Esaun kanssa","Harranissa oli nälänhätä"],"Kaikki oli hyvin, mutta Jaakob kaipasi kotiin."],
-      ["mc","Mitä Jaakob pelkäsi kotimatkalla?","Että Esau on yhä vihainen ja kostaa",["Villieläimiä","Faraota","Eksymistä"],"Jaakob pelkäsi Esaun kostoa."],
-      ["mc","Mitä Jaakob lähetti Esaulle lahjaksi?","Lampaita, vuohia, aaseja ja kameleita",["Kultaa","Viljasäkkejä","Hopeamaljan"],"Palvelijat veivät eläimiä lahjaksi."],
-      ["mc","Kuinka monta miestä Esaulla oli mukanaan?","Neljäsataa",["Kaksitoista","Seitsemän","Sata"],"Esau tuli 400 aseistautuneen miehen kanssa."],
-      ["who","Herra, minä en ansaitse hyvyyttäsi, mutta auta minua.","Jaakob",["Esau","Joosef","Iisak"],"Jaakob rukoili apua Jumalalta."],
-      ["mc","Kuinka monta kertaa Jaakob kumarsi Esaun edessä?","Seitsemän",["Kerran","Kolme","Kaksitoista"],"Jaakob kumarsi seitsemän kertaa."],
-      ["koe","Mistä voit päätellä, että Esau ei muistanut pahalla veljeään?","Hän halasi Jaakobia ja alkoi itkeä",["Hän otti lahjat ja lähti","Hän toi 400 miestä","Hän kumarsi seitsemän kertaa"],"Esau ei ollut enää vihainen – hän oli antanut anteeksi."]
-    ], bonus:[
-      ["mc","Minkä uuden nimen Jaakob sai painin jälkeen?","Israel",["Egypti","Abraham","Harran"],"Tuntematon mies siunasi Jaakobin ja antoi nimen Israel."],
-      ["mc","Mitä jaakopinpaini tarkoittaa nykyään?","Jonkin vaikean asian pohtimista",["Painiottelua","Juoksukilpailua","Unien selittämistä"],"Kun pohtii jotain vaikeaa, sanotaan jaakopinpainiksi."],
-    ]},
-    { id:"k8", no:8, emoji:"🐫", title:"Veljet myyvät Joosefin", cards:["Joosef","Ruuben","Juuda"], q:[
-      ["mc","Kuinka monta poikaa Jaakobilla oli?","Kaksitoista",["Kaksi","Seitsemän","Kymmenen"],"12 poikaa ja yksi tyttö."],
-      ["mc","Kuka oli Jaakobin lempilapsi?","Joosef",["Ruuben","Benjamin","Juuda"],"Jaakob hemmotteli Joosefia monin tavoin."],
-      ["tf","Veljet olivat Joosefille kateellisia.",true,"Totta! Koska Jaakob hemmotteli Joosefia, veljet tulivat kateellisiksi."],
-      ["who","Tuolta se unennäkijä tulee.","Veljet",["Jaakob","Farao","Potifar"],"Veljet pilkkasivat Joosefia, kun hän toi heille ruokaa."],
-      ["mc","Kuka veljistä halusi säästää Joosefin hengen?","Ruuben",["Juuda","Simeon","Benjamin"],"Ruuben aikoi nostaa Joosefin salaa kaivosta."],
-      ["mc","Mihin veljet pudottivat Joosefin?","Tyhjään kaivoon",["Jokeen","Vankilaan","Luolaan"],"Ruuben ehdotti kaivoa, jotta Joosef jäisi henkiin."],
-      ["who","Myydään Joosef kauppiaille. Silloin pääsemme hänestä ikuisesti eroon.","Juuda",["Ruuben","Jaakob","Benjamin"],"Juuda ehdotti myymistä."],
-      ["mc","Minne kauppakaravaani oli matkalla?","Egyptiin",["Harraniin","Mesopotamiaan","Kanaaninmaahan"],"Joosef myytiin Egyptiin matkaaville kauppiaille."],
-      ["mc","Mitä veljet tekivät Joosefin puvulle?","Repivät sen ja sotkivat sen vuohen vereen",["Myivät sen","Polttivat sen","Antoivat sen Benjaminille"],"Näin he huijasivat isäänsä."],
-      ["mc","Mitä Jaakob luuli tapahtuneen Joosefille?","Pedot olivat tappaneet hänet",["Hän oli eksynyt","Hän oli muuttanut Egyptiin","Hän oli mennyt naimisiin"],"Jaakob suri rakkainta poikaansa kauan."],
-      ["koe","Miksi veljet vihasivat Joosefia?","Jaakob hemmotteli Joosefia, ja Joosef kertoi veljilleen erikoisista unistaan",["Joosef varasti heidän lampaansa","Joosef oli laiska","Joosef muutti pois kotoa"],"Veljet tulivat kateellisiksi, ja unet kuultuaan he vihasivat Joosefia entistä enemmän."]
-    ], bonus:[
-      ["mc","Mitä Joosefin ensimmäisessä unessa tapahtui?","Veljien lyhteet kumartuivat hänen lyhteensä edessä",["Lehmät söivät toisensa","Hän lensi taivaalle","Kaivo täyttyi vedellä"],"Unessa sidottiin viljalyhteitä."],
-      ["mc","Mitkä kumartuivat Joosefin eteen toisessa unessa?","Aurinko, kuu ja yksitoista tähteä",["Seitsemän lehmää","Kaksitoista kamelia","Farao ja hänen vaimonsa"],"Unet suututtivat veljiä entistä enemmän."],
-    ]},
-    { id:"k9", no:9, emoji:"🐄", title:"Joosef Egyptissä", cards:["Potifar","Farao"], q:[
-      ["mc","Kenelle Joosef myytiin orjaksi Egyptissä?","Potifarille",["Faraolle","Juudalle","Kauppiaiden kuninkaalle"],"Potifar oli faraon hoviherra."],
-      ["mc","Minkä tehtävän Potifar antoi Joosefille?","Taloudenhoitajan",["Paimenen","Sotilaan","Kokin"],"Joosef oli ahkera, joten hän sai hoitaa Potifarin omaisuutta."],
-      ["mc","Miksi Joosef joutui vankilaan?","Potifarin vaimo valehteli hänestä",["Hän varasti kultaa","Hän karkasi","Farao suuttui hänen uniinsa"],"Potifar uskoi vaimoaan."],
-      ["mc","Mitä Joosef teki vankilassa?","Selitti muiden vankien unia",["Rakensi pyramidin","Kirjoitti kirjan","Ei mitään"],"Unet toteutuivat, ja Joosefin maine levisi."],
-      ["mc","Mitä faraon ensimmäisessä unessa nousi Niilistä?","Seitsemän lihavaa ja seitsemän laihaa lehmää",["Kaksitoista kalaa","Seitsemän kamelia","Krokotiili"],"Laihat lehmät söivät lihavat."],
-      ["mc","Mitä faraon unet tarkoittivat?","Seitsemän hyvää satovuotta ja sitten seitsemän huonoa",["Niili tulvii","Farao saa poikia","Vihollinen hyökkää"],"Jumala kertoi unilla, millaisia aikoja on tulossa."],
-      ["who","Hyvien vuosien aikana kannattaa korjata viljaa talteen.","Joosef",["Farao","Potifar","Jaakob"],"Joosef neuvoi faraota varautumaan."],
-      ["mc","Mitä farao antoi Joosefille?","Sinettisormuksen, hienot vaatteet ja kultakäädyt",["Kamelin ja teltan","Hopeamaljan","Leipää ja vettä"],"Farao pujotti sormuksen Joosefin sormeen."],
-      ["mc","Mikä Joosefista tuli?","Egyptin käskynhaltija",["Farao","Potifarin orja","Paimen"],"Kaikkien Egyptissä oli toteltava Joosefia."],
-      ["koe","Miten Joosefista tuli Egyptin käskynhaltija?","Hän selitti faraon unet ja neuvoi keräämään viljaa talteen",["Hän voitti sodan","Hän osti paikan kullalla","Potifar teki hänestä käskynhaltijan"],"Farao oli tyytyväinen Joosefin selitykseen."],
-      ["mc","Miksi Potifar valitsi Joosefin taloudenhoitajakseen?","Joosef oli ahkera ja palveli isäntäänsä hyvin",["Joosef oli Potifarin sukulainen","Farao käski niin","Joosef osasi lukea"],"Joosef oli ahkera ja luotettava työssään."]
-    ], bonus:[
-      ["mc","Mitä sana farao tarkoittaa?","Suuri talo",["Kultainen kuningas","Auringon poika","Niilin herra"],"Farao on egyptin kieltä."],
-      ["mc","Kenen poikana egyptiläiset pitivät faraota?","Auringonjumalan",["Kuun","Jaakobin","Abrahamin"],"Ihmiset ajattelivat, että farao on auringonjumalan poika."],
-      ["tf","Farao omisti Egyptissä kaiken maan.",true,"Totta! Kaikki egyptiläiset olivat hänen alaisiaan."],
-    ]},
-    { id:"k10", no:10, emoji:"🌾", title:"Joosef antaa anteeksi", cards:["Benjamin"], q:[
-      ["mc","Miksi naapurimaista tultiin Egyptiin?","Ostamaan viljaa, koska kaikkialla oli ruuasta pula",["Katsomaan pyramideja","Tapaamaan faraota","Etsimään Joosefia"],"Joosef avasi viljavarastot huonoina vuosina."],
-      ["tf","Veljet tunnistivat Joosefin heti.",false,"Tarua! Joosef tunsi veljet, mutta he eivät tunnistaneet häntä."],
-      ["who","Taidatte olla vakoojia.","Joosef",["Farao","Juuda","Benjamin"],"Joosef halusi koetella veljiään."],
-      ["mc","Kuka veljistä jäi ensimmäisellä kerralla kotiin isän luo?","Benjamin",["Ruuben","Juuda","Simeon"],"Benjamin oli nuorin veli."],
-      ["mc","Kuka veljistä jäi Egyptiin vangiksi?","Simeon",["Benjamin","Juuda","Ruuben"],"Muut palasivat peloissaan kotiin."],
-      ["mc","Mitä Joosef käski piilottaa Benjaminin säkkiin?","Hopeamaljan",["Sinettisormuksen","Kultakäädyt","Leivän"],"Sotilaat löysivät maljan Benjaminin säkistä."],
-      ["who","Jos Benjamin ei palaa kanssamme kotiin, isämme kuolee surusta. Tee minusta orjasi Benjaminin asemasta.","Juuda",["Ruuben","Simeon","Joosef"],"Juuda puhui rohkeasti Joosefille."],
-      ["who","Minä olen veljenne. Menkää kotiin hakemaan perheenne ja isämme.","Joosef",["Farao","Juuda","Benjamin"],"Joosef purskahti itkuun ja kertoi, kuka hän on."],
-      ["mc","Mitä Joosef pyysi veljiä tekemään?","Hakemaan perheen ja isän asumaan Egyptiin",["Lähtemään pois ikuisesti","Maksamaan viljasta kultaa","Jäämään kaikki vangiksi"],"Joosefin suku muutti Kanaaninmaasta Egyptiin."],
-      ["tf","Lopulta Joosef antoi veljilleen anteeksi.",true,"Totta!"],
-      ["koe","Miksi Joosef ei heti kertonut veljilleen, kuka hän on?","Hän halusi koetella veljiään",["Hän oli unohtanut heidät","Farao kielsi","Hän ei tunnistanut heitä"],"Joosef tunsi veljet heti, mutta halusi koetella heitä. Kun Juuda tarjoutui orjaksi Benjaminin asemasta, Joosef ei enää voinut hillitä itseään."]
-    ], bonus:[
-      ["mc","Mikä oli Jaakobin tyttären nimi?","Dina",["Saara","Rebekka","Hagar"],"Jaakobilla oli 12 poikaa ja tytär Dina."],
-    ]}
-  ],
-  timeline: [
-    "Abraham lähtee Mesopotamiasta Kanaaninmaahan",
-    "Hagar synnyttää Ismaelin",
-    "Kolme vierasta tulee Abrahamin teltalle",
-    "Saara synnyttää Iisakin",
-    "Iisakille ja Rebekalle syntyy kaksoset Esau ja Jaakob",
-    "Jaakob saa isän siunauksen huijaamalla",
-    "Jaakob pakenee Harraniin",
-    "Jaakob palaa kotiin ja tekee sovinnon Esaun kanssa",
-    "Veljet myyvät Joosefin kauppiaille",
-    "Joosef joutuu Egyptissä vankilaan",
-    "Joosef selittää faraon unet",
-    "Joosefista tulee Egyptin käskynhaltija",
-    "Veljet tulevat Egyptiin ostamaan viljaa",
-    "Joosef kertoo veljilleen, kuka hän on",
-    "Joosefin suku muuttaa Egyptiin"
-  ],
-  characters: [
-    { name:"Abraham", emoji:"⭐", clues:["Asuin Mesopotamiassa ja minulla oli paljon eläimiä.","Olin pitkään murheellinen, koska minulla ei ollut lasta.","Jumala lupasi, että minusta tulee suuren kansan isä.","Poikani ovat Ismael ja Iisak."]},
-    { name:"Saara", emoji:"😄", clues:["Olin pitkään ilman lasta.","Ehdotin, että mieheni hankkisi lapsen palvelijattareni kanssa.","Nauroin, kun vieras sanoi, että saan pojan.","Poikani on Iisak."]},
-    { name:"Hagar", emoji:"💧", clues:["Olin palvelijatar.","Sain pojan Abrahamin kanssa.","Minut lähetettiin pois leivän ja vesileilin kanssa.","Poikani on Ismael."]},
-    { name:"Ismael", emoji:"🌙", clues:["Isäni oli Abraham.","Äitini oli palvelijatar Hagar.","Jumala lupasi huolehtia minusta.","Minut lähetettiin äitini kanssa matkaan leivän ja vesileilin kanssa."]},
-    { name:"Iisak", emoji:"🎉", clues:["Isäni järjesti suuret juhlat syntymäni kunniaksi.","Vaimoni oli Rebekka.","Vanhana olin melkein sokea.","Siunasin vahingossa väärän poikani."]},
-    { name:"Rebekka", emoji:"🍲", clues:["Mieheni oli Iisak.","Sain kaksospojat.","Hiljainen ja kotona viihtyvä poikani oli minulle hyvin rakas.","Valmistin vuohista ruokaa, jotta Jaakob saisi siunauksen."]},
-    { name:"Esau", emoji:"🦌", clues:["Olin kaksosista esikoinen.","Olin taitava metsästäjä.","Raivostuin, kun veljeni vei siunaukseni.","Lopulta halasin veljeäni ja annoin anteeksi."]},
-    { name:"Jaakob", emoji:"🤼", clues:["Viihdyin kotona ja olin äidilleni hyvin rakas.","Puin päälleni veljeni vaatteet.","Asuin monta vuotta Harranissa.","Kumarsin veljeni edessä seitsemän kertaa."]},
-    { name:"Joosef", emoji:"🌾", clues:["Olin isäni suosikki.","Näin unia, joissa muut kumartuivat edessäni.","Veljeni myivät minut orjaksi.","Minusta tuli Egyptin käskynhaltija."]},
-    { name:"Ruuben", emoji:"🕳️", clues:["Olin yksi Jaakobin pojista.","En halunnut, että veljeämme tapetaan.","Ehdotin, että hänet heitetään kaivoon – aioin pelastaa hänet myöhemmin."]},
-    { name:"Juuda", emoji:"🤲", clues:["Olin yksi Jaakobin pojista.","Ehdotin, että veljemme myydään kauppiaille.","Myöhemmin tarjouduin orjaksi Benjaminin sijasta."]},
-    { name:"Benjamin", emoji:"🏺", clues:["Olin Jaakobin pojista nuorin.","Jäin aluksi kotiin isän luo.","Säkistäni löytyi hopeamalja."]},
-    { name:"Farao", emoji:"👑", clues:["Hoviherrani oli nimeltään Potifar.","Kuulin, että eräs vanki osasi selittää unia.","Näin unta lihavista ja laihoista lehmistä.","Annoin sinettisormukseni Joosefille."]},
-    { name:"Potifar", emoji:"🏛️", clues:["Asuin Egyptissä ja olin faraon hoviherra.","Ostin orjan, josta tuli taloudenhoitajani.","Uskoin vaimoani ja heitin palvelijani vankilaan."]}
-  ],
-  // Sanaparit: [sana, selitys] – kolmas arvo true = Lue lisää -bonus
-  words: [
-    ["Käskynhaltija","Joosefin tehtävä Egyptissä – kaikkien oli toteltava häntä"],
-    ["Siunaus","Iisak antoi sen Jaakobille, eikä sitä voinut enää perua"],
-    ["Kanaaninmaa","Maa, jonka Jumala lupasi Abrahamille"],
-    ["Harran","Kaupunki, jossa Jaakob asui monta vuotta"],
-    ["Mesopotamia","Abrahamin kotiseutu"],
-    ["Egypti","Maa, jonne Joosef myytiin orjaksi"],
-    ["Paimentolainen","Kulkee karjan kanssa paikasta toiseen ja asuu teltassa",true],
-    ["Esikoinen","Perheen vanhin poika",true],
-    ["Farao","Egyptin hallitsija – sana tarkoittaa ”suuri talo”",true],
-    ["Jaakopinpaini","Jonkin vaikean asian pohtiminen",true],
-    ["Muslimi","Islamin kannattaja",true],
-    ["Israel","Jaakobin uusi nimi",true]
-  ]
-};
-</script>
+<!-- ============ SISÄLTÖPAKETIT: yksi tiedosto per koealue ============ -->
+<script src="packs/uskonto3-abraham-joosef.js"></script>
 
 <!-- ============ PELIMOOTTORI (sama kaikille aineille) ============ -->
 <script>
 (function(){
-const KEY = 'kp_' + PACK.id;
-const defS = () => ({stars:{}, best:{}, miss:{}, cards:{}, games:{}, streak:{n:0,last:''}, xp:0});
-let S;
-try { S = Object.assign(defS(), JSON.parse(localStorage.getItem(KEY) || '{}')); } catch(e) { S = defS(); }
-const save = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch(e){} };
-
+const PACKS = window.PACKS || [];
 const app = document.getElementById('app');
 const $ = s => app.querySelector(s);
 const $$ = s => Array.from(app.querySelectorAll(s));
@@ -283,22 +154,90 @@ const starStr = n => '★'.repeat(n) + '☆'.repeat(3-n);
 const pick = a => a[Math.random()*a.length|0];
 const PRAISE = ['Hienoa!','Mahtavaa!','Oikein!','Loistavaa!','Juuri niin!','Huippua!'];
 const TRY = ['Melkein!','Ei haittaa!','Ensi kerralla!','Hyvä yritys!'];
-
-// Kysymykset objekteiksi. Tunniste tekstistä, jotta tallennetut virheet pysyvät oikeissa kysymyksissä, vaikka järjestys muuttuu.
-const QS = [];
-const addQ = (ch, r, bonus) => {
-  const id = ch.id + ':' + r[1];
-  if (r[0] === 'tf') QS.push({id, ch:ch.id, bonus, type:'tf', text:r[1], answer: r[2] ? 'Totta' : 'Tarua', options:['Totta','Tarua'], explain:r[3]||''});
-  else QS.push({id, ch:ch.id, bonus, type:r[0], text:r[1], answer:r[2], wrong:r[3], explain:r[4]||''});
+const store = {
+  get(k){ try { return JSON.parse(localStorage.getItem(k) || 'null'); } catch(e){ return null; } },
+  set(k,v){ try { localStorage.setItem(k, JSON.stringify(v)); } catch(e){} }
 };
-PACK.chapters.forEach(ch => { ch.q.forEach(r => addQ(ch, r, false)); (ch.bonus||[]).forEach(r => addQ(ch, r, true)); });
-// Bonussanoista monivalintakysymyksiä
-const BW = PACK.words.filter(w => w[2]);
-BW.forEach(w => QS.push({id:'w:'+w[0], ch:'', bonus:true, type:'mc', text:'Mitä tarkoittaa ”'+w[0]+'”?', answer:w[1], wrong:shuffle(BW.filter(x=>x!==w).map(x=>x[1])).slice(0,3), explain:''}));
-const CORE = QS.filter(q => !q.bonus);
-const qById = id => QS.find(q => q.id === id);
 
-// Ääni & puhe
+// ================= LEMMIKKIKAUPPA (sama kaikille aineille) =================
+// [id, emoji, nimi, hinta]  · ruoissa viides arvo = montako ruokintaa
+const SHOP = {
+  animal:{ t:'Eläimet', i:'🐾', items:[
+    ['cat','🐱','Kissa',0],['dog','🐶','Koira',0],['rabbit','🐰','Pupu',0],['hamster','🐹','Hamsteri',0],
+    ['frog','🐸','Sammakko',200],['chick','🐥','Tipu',250],['penguin','🐧','Pingviini',300],['fox','🦊','Kettu',400],
+    ['turtle','🐢','Kilpikonna',450],['koala','🐨','Koala',500],['panda','🐼','Panda',600],['monkey','🐵','Apina',600],
+    ['owl','🦉','Pöllö',700],['pig','🐷','Possu',350],['cow','🐮','Lehmä',400],['bear','🐻','Karhu',700],
+    ['lion','🦁','Leijona',900],['tiger','🐯','Tiikeri',900],['unicorn','🦄','Yksisarvinen',1500],['dino','🦖','Dinosaurus',2000],['dragon','🐲','Lohikäärme',2500]]},
+  hat:{ t:'Hatut', i:'🎩', items:[
+    ['cap','🧢','Lippis',100],['flower','🌸','Kukka',120],['bow','🎀','Rusetti',150],['sunhat','👒','Kesähattu',200],
+    ['helmet','⛑️','Kypärä',250],['tophat','🎩','Silinteri',300],['phones','🎧','Kuulokkeet',350],['grad','🎓','Lakki',400],
+    ['star','⭐','Tähti',500],['crown','👑','Kruunu',800]]},
+  outfit:{ t:'Asut', i:'👕', items:[
+    ['scarf','🧣','Kaulahuivi',100],['tshirt','👕','T-paita',120],['tie','👔','Solmio',150],['jersey','🎽','Urheilupaita',200],
+    ['vest','🦺','Huomioliivi',200],['dress','👗','Mekko',250],['coat','🧥','Takki',300],['karate','🥋','Karatepuku',400],
+    ['medal','🏅','Mitali',600],['trophy','🏆','Pokaali',1000]]},
+  glasses:{ t:'Lasit', i:'🕶️', items:[
+    ['specs','👓','Silmälasit',150],['shades','🕶️','Aurinkolasit',250],['goggles','🥽','Laskettelulasit',350]]},
+  food:{ t:'Ruoat', i:'🍎', items:[
+    ['apple','🍎','Omena',15,1],['carrot','🥕','Porkkana',15,1],['banana','🍌','Banaani',20,1],['cheese','🧀','Juusto',25,1],
+    ['croissant','🥐','Croissant',30,1],['pizza','🍕','Pizza',40,2],['burger','🍔','Hampurilainen',40,2],['sushi','🍣','Sushi',50,2],
+    ['icecream','🍦','Jäätelö',50,2],['cake','🎂','Kakku',100,5]]},
+  vehicle:{ t:'Kulkuneuvot', i:'🚲', items:[
+    ['kick','🛴','Potkulauta',200],['skate','🛹','Rullalauta',250],['bike','🚲','Pyörä',300],['scooter','🛵','Skootteri',500],
+    ['car','🚗','Auto',800],['sail','⛵','Purjevene',900],['train','🚂','Juna',1000],['race','🏎️','Kilpa-auto',1200],
+    ['heli','🚁','Helikopteri',1500],['rocket','🚀','Raketti',2500],['ufo','🛸','Ufo',3000]]},
+  home:{ t:'Kodit', i:'🏠', items:[
+    ['tent','⛺','Teltta',200],['hut','🛖','Maja',300],['camp','🏕️','Leiri',400],['house','🏠','Talo',600],
+    ['garden','🏡','Puutarhatalo',900],['island','🏝️','Saari',1800],['palace','🏯','Palatsi',2000],['castle','🏰','Linna',2500]]}
+};
+const ITEM = {};
+Object.entries(SHOP).forEach(([slot,c]) => c.items.forEach(r => ITEM[r[0]] = {id:r[0], e:r[1], name:r[2], price:r[3], feeds:r[4]||0, slot}));
+
+// ================= YHTEINEN LOMPAKKO & LEMMIKKI =================
+const GKEY = 'kp_global';
+const defG = () => ({gems:0, earned:0, streak:{n:0,last:''}, owned:{}, pet:{animal:null,name:'',fed:0,hat:null,outfit:null,glasses:null,vehicle:null,home:null}});
+let G = store.get(GKEY);
+if (!G) {
+  G = defG();
+  // Siirretään aiemmin kerätyt timantit ja putki vanhoista koekohtaisista tallennuksista
+  PACKS.forEach(p => { const s = store.get('kp_'+p.id); if (s) { G.gems += s.xp||0; G.earned += s.xp||0; if (s.streak && (s.streak.n||0) > G.streak.n) G.streak = s.streak; } });
+} else { const d = defG(); G = Object.assign(d, G); G.pet = Object.assign(d.pet, G.pet || {}); }
+const saveG = () => store.set(GKEY, G);
+saveG();
+const petLevel = () => 1 + Math.floor(G.pet.fed / 5);
+
+function dayStr(d){ return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate(); }
+function touchDay(){
+  const today = dayStr(new Date()), y = new Date(); y.setDate(y.getDate()-1);
+  if (G.streak.last === today) return;
+  G.streak.n = (G.streak.last === dayStr(y)) ? G.streak.n + 1 : 1;
+  G.streak.last = today;
+}
+
+// ================= KOEKOHTAINEN TILA =================
+let PACK = null, QS = [], CORE = [], S = null, KEY = '', startEarned = 0;
+const defS = () => ({stars:{}, best:{}, miss:{}, cards:{}, games:{}, xp:0});
+const save = () => { if (S) store.set(KEY, S); saveG(); };
+function gem(n){ G.gems += n; G.earned += n; if (S) S.xp = (S.xp||0) + n; }
+
+function openPack(p){
+  PACK = p; KEY = 'kp_' + p.id;
+  S = Object.assign(defS(), store.get(KEY) || {});
+  QS = [];
+  const addQ = (ch, r, bonus) => {
+    const id = ch.id + ':' + r[1];
+    if (r[0] === 'tf') QS.push({id, ch:ch.id, bonus, type:'tf', text:r[1], answer: r[2] ? 'Totta' : 'Tarua', options:['Totta','Tarua'], explain:r[3]||''});
+    else QS.push({id, ch:ch.id, bonus, type:r[0], text:r[1], answer:r[2], wrong:r[3], explain:r[4]||''});
+  };
+  p.chapters.forEach(ch => { ch.q.forEach(r => addQ(ch, r, false)); (ch.bonus||[]).forEach(r => addQ(ch, r, true)); });
+  const BW = (p.words||[]).filter(w => w[2]);
+  BW.forEach(w => QS.push({id:'w:'+w[0], ch:'', bonus:true, type:'mc', text:'Mitä tarkoittaa ”'+w[0]+'”?', answer:w[1], wrong:shuffle(BW.filter(x=>x!==w).map(x=>x[1])).slice(0,3), explain:''}));
+  CORE = QS.filter(q => !q.bonus);
+}
+const qById = id => QS.find(q => q.id === id);
+function packStars(p){ const s = store.get('kp_'+p.id) || {}; return p.chapters.reduce((a,c) => a + ((s.stars||{})[c.id]||0), 0); }
+
+// ================= ÄÄNET & EFEKTIT =================
 let AC;
 function beep(ok){
   try {
@@ -316,55 +255,135 @@ function say(t){
     speechSynthesis.speak(u); } catch(e){}
 }
 app.addEventListener('click', e => { const b = e.target.closest('[data-say]'); if (b) say(b.dataset.say); });
-
 function confetti(){
   const d = document.createElement('div'); d.className = 'confetti';
-  const em = ['⭐','🎉','✨','🌟','🐫','🌾'];
+  const em = ['⭐','🎉','✨','🌟','💎'];
   for (let i=0;i<34;i++){ const s=document.createElement('span'); s.textContent=pick(em); s.style.left=(Math.random()*100)+'%'; s.style.animationDelay=(Math.random()*.8)+'s'; d.appendChild(s); }
   document.body.appendChild(d); setTimeout(() => d.remove(), 3400);
 }
-function shake(el){ el.classList.remove('shake'); void el.offsetWidth; el.classList.add('shake'); }
-function dayStr(d){ return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate(); }
-function touchDay(){
-  const today = dayStr(new Date()), y = new Date(); y.setDate(y.getDate()-1);
-  if (S.streak.last === today) return;
-  S.streak.n = (S.streak.last === dayStr(y)) ? S.streak.n + 1 : 1;
-  S.streak.last = today;
+function shake(el){ if (!el) return; el.classList.remove('shake'); void el.offsetWidth; el.classList.add('shake'); }
+function hearts(em, n){
+  const st = $('.stage'); if (!st) return;
+  for (let i=0;i<n;i++){ const h = document.createElement('span'); h.className='heart'; h.textContent = em; h.style.left = (40 + Math.random()*20)+'%'; h.style.bottom = (60 + Math.random()*30)+'px'; h.style.animationDelay = (i*.12)+'s'; st.appendChild(h); setTimeout(() => h.remove(), 1800); }
 }
 function go(fn){ window.scrollTo(0,0); fn(); }
 
-// ---------- KOTI ----------
-function home(){
+// ================= LEMMIKKI =================
+function petHTML(small){
+  const P = G.pet, it = k => P[k] && ITEM[P[k]] ? ITEM[P[k]].e : '';
+  const size = Math.min(150, (small ? 78 : 92) + (petLevel()-1) * 4);
+  return `<div class="stage ${small?'sm':''}"><span class="sun">☀️</span><span class="cloud">☁️</span>
+    ${P.home ? `<span class="st-home">${it('home')}</span>` : ''}
+    ${P.vehicle ? `<span class="st-veh">${it('vehicle')}</span>` : ''}
+    <div class="pet" style="font-size:${size}px"><span class="pa">${P.animal ? it('animal') : '🥚'}</span>
+      ${P.hat ? `<span class="ph">${it('hat')}</span>` : ''}${P.glasses ? `<span class="pg">${it('glasses')}</span>` : ''}${P.outfit ? `<span class="po">${it('outfit')}</span>` : ''}</div></div>`;
+}
+
+function chooseFirst(){
+  const free = SHOP.animal.items.filter(r => r[3] === 0);
+  let sel = null;
+  app.innerHTML = `
+    <div class="top"><span class="chip">💎 ${G.gems}</span></div>
+    <h1>Valitse oma lemmikki! 🥚</h1>
+    <p class="sub">Kertaamalla saat timantteja 💎. Niillä voit ostaa lemmikillesi ruokaa, hattuja, asuja, kulkuneuvoja ja kodin.</p>
+    <div class="grid" style="grid-template-columns:repeat(4,1fr)">${free.map(r => `<button class="pick" data-a="${r[0]}">${r[1]}</button>`).join('')}</div>
+    <input class="namebox" id="nm" maxlength="16" placeholder="Lemmikin nimi" autocomplete="off">
+    <button class="big" id="ok">Valmis!</button><div class="msg" id="msg"></div>`;
+  $$('[data-a]').forEach(b => b.onclick = () => { sel = b.dataset.a; $$('[data-a]').forEach(x => x.classList.toggle('sel', x === b)); });
+  $('#ok').onclick = () => {
+    if (!sel) { $('#msg').textContent = 'Valitse ensin eläin.'; return; }
+    G.owned[sel] = 1; G.pet.animal = sel; G.pet.name = ($('#nm').value || '').trim() || ITEM[sel].name; saveG(); confetti(); go(mainHome);
+  };
+}
+
+function mainHome(){
+  if (!G.pet.animal) return chooseFirst();
+  const P = G.pet, lvl = petLevel();
+  app.innerHTML = `
+    <div class="top"><span class="chip">💎 ${G.gems}</span><span class="chip">🔥 ${G.streak.n} pv</span></div>
+    ${petHTML(false)}
+    <div class="petbar"><button class="petname" id="nm">${esc(P.name)} ✏️</button><span class="lvl">Taso ${lvl}<br>🍎 ${P.fed % 5}/5 seuraavaan</span></div>
+    <div class="grid">
+      <button class="tile" data-shop="food"><span class="e">🍎</span>Ruoki</button>
+      <button class="tile" data-shop="hat"><span class="e">🛍️</span>Kauppa</button>
+    </div>
+    <div class="sec">📚 Kokeet</div>
+    ${PACKS.map((p,i) => `<button class="pk" data-p="${i}"><span class="ic">${p.emoji||'📘'}</span><span><b>${esc(p.title)}</b><span>${esc(p.subtitle)} · ⭐ ${packStars(p)}/${p.chapters.length*3}</span></span></button>`).join('')}`;
+  $('#nm').onclick = () => { const n = prompt('Lemmikin uusi nimi:', P.name); if (n && n.trim()) { P.name = n.trim().slice(0,16); saveG(); mainHome(); } };
+  $('.pet').onclick = () => hearts('💖', 3);
+  $$('[data-shop]').forEach(b => b.onclick = () => go(() => shop(b.dataset.shop)));
+  $$('[data-p]').forEach(b => b.onclick = () => { openPack(PACKS[+b.dataset.p]); go(packHome); });
+}
+
+function shop(cat, msg=''){
+  const c = SHOP[cat], P = G.pet;
+  app.innerHTML = `
+    <div class="top"><button class="back" id="x">← Takaisin</button><span class="chip">💎 ${G.gems}</span></div>
+    ${petHTML(true)}
+    <div class="tabs">${Object.entries(SHOP).map(([k,v]) => `<button class="tab ${k===cat?'on':''}" data-t="${k}">${v.i} ${v.t}</button>`).join('')}</div>
+    <div class="msg" id="msg">${msg || (cat==='food' ? `Ruoka kasvattaa lemmikkiä – taso nousee 5 ruokinnan välein!` : '&nbsp;')}</div>
+    <div class="shop">${c.items.map(r => {
+      const it = ITEM[r[0]], own = cat !== 'food' && G.owned[it.id], on = P[cat] === it.id;
+      const label = cat === 'food' ? `${it.price} 💎` : on ? 'Käytössä' : own ? 'Käytä' : `${it.price} 💎`;
+      return `<button class="item ${own?'own':''} ${on?'on':''} ${!own && G.gems < it.price ? 'poor':''}" data-i="${it.id}"><span class="e">${it.e}</span><span class="n">${esc(it.name)}</span><span class="p">${label}</span></button>`;
+    }).join('')}</div>`;
+  $('#x').onclick = () => go(mainHome);
+  $$('[data-t]').forEach(b => b.onclick = () => shop(b.dataset.t));
+  const tabOn = $('.tab.on'); if (tabOn) tabOn.scrollIntoView({inline:'center', block:'nearest'});
+  $$('[data-i]').forEach(b => b.onclick = () => {
+    const it = ITEM[b.dataset.i];
+    if (cat === 'food') {
+      if (G.gems < it.price) { shake(b); $('#msg').textContent = `Tarvitset vielä ${it.price - G.gems} 💎. Kertaa lisää!`; return; }
+      const before = petLevel(); G.gems -= it.price; P.fed += it.feeds; saveG(); beep(true);
+      const up = petLevel() > before;
+      shop(cat, up ? `🎉 ${esc(P.name)} kasvoi! Nyt taso ${petLevel()}!` : `Nam! ${it.e} ${esc(P.name)} tykkää!`);
+      hearts(up ? '⭐' : '💖', up ? 6 : 3); if (up) confetti();
+      return;
+    }
+    if (G.owned[it.id]) {
+      if (P[cat] === it.id) { if (cat === 'animal') return; P[cat] = null; } else P[cat] = it.id;
+      saveG(); shop(cat); return;
+    }
+    if (G.gems < it.price) { shake(b); $('#msg').textContent = `${it.e} ${it.name}: tarvitset vielä ${it.price - G.gems} 💎.`; return; }
+    if (!confirm(`Ostetaanko ${it.name} ${it.e} hintaan ${it.price} 💎?`)) return;
+    G.gems -= it.price; G.owned[it.id] = 1; P[cat] = it.id; saveG(); beep(true);
+    shop(cat, `Ostit: ${it.e} ${esc(it.name)}!`); hearts('✨', 5); confetti();
+  });
+}
+
+// ================= KOKEEN ETUSIVU =================
+function packHome(){
   const tot = PACK.chapters.reduce((s,c) => s + (S.stars[c.id]||0), 0);
   const missN = Object.keys(S.miss).filter(qById).length;
   const nc = Object.keys(S.cards).length;
   app.innerHTML = `
-    <div class="top"><span class="chip">⭐ ${tot}/${PACK.chapters.length*3}</span><span class="chip">🔥 ${S.streak.n} pv</span><span class="chip">💎 ${S.xp}</span></div>
+    <div class="top"><button class="back" id="x">🐾 Lemmikki</button><span class="chip">⭐ ${tot}/${PACK.chapters.length*3}</span><span class="chip">💎 ${G.gems}</span></div>
     <h1>${esc(PACK.title)}</h1><p class="sub">${esc(PACK.subtitle)}</p>
     <div class="sec">🗺️ Seikkailupolku</div>
     <div class="path">${PACK.chapters.map(c => `
       <button class="node ${(S.stars[c.id]||0)===3?'full':''}" data-ch="${c.id}"><span class="ic">${c.emoji}</span>
-      <span><span class="nm">${c.no}. ${esc(c.title)}</span><br><span class="st">${starStr(S.stars[c.id]||0)}</span></span></button>`).join('')}
+      <span><span class="nm">${c.no ? c.no + '. ' : ''}${esc(c.title)}</span><br><span class="st">${starStr(S.stars[c.id]||0)}</span></span></button>`).join('')}
     </div>
     <div class="sec">🎮 Pelit</div>
     <div class="grid">
       ${missN ? `<button class="tile hot" data-g="miss"><span class="e">🎯</span>Kertaa virheet<small>${missN} kysymystä</small></button>` : ''}
-      <button class="tile" data-g="timeline"><span class="e">📜</span>Aikajana<small>Mikä tapahtui ensin?</small></button>
-      <button class="tile" data-g="whoami"><span class="e">🕵️</span>Kuka minä olen?<small>Arvaa vihjeistä</small></button>
-      <button class="tile" data-g="match"><span class="e">🧩</span>Sanaparit<small>Mitä sana tarkoittaa?</small></button>
+      ${(PACK.timeline||[]).length >= 5 ? `<button class="tile" data-g="timeline"><span class="e">📜</span>Aikajana<small>Mikä tapahtui ensin?</small></button>` : ''}
+      ${(PACK.characters||[]).length >= 4 ? `<button class="tile" data-g="whoami"><span class="e">🕵️</span>Kuka minä olen?<small>Arvaa vihjeistä</small></button>` : ''}
+      ${(PACK.words||[]).filter(w=>!w[2]).length >= 6 ? `<button class="tile" data-g="match"><span class="e">🧩</span>Sanaparit<small>Mitä sana tarkoittaa?</small></button>` : ''}
       <button class="tile" data-g="exam"><span class="e">📝</span>Harjoituskoe<small>Kaikki kappaleet</small></button>
       ${QS.some(q => q.bonus) ? `<button class="tile" data-g="bonus"><span class="e">💡</span>Bonustietoa<small>Lue lisää -laatikot</small></button>` : ''}
-      <button class="tile" data-g="cards"><span class="e">🃏</span>Hahmokortit<small>${nc}/${PACK.characters.length} kerätty</small></button>
+      ${(PACK.characters||[]).length ? `<button class="tile" data-g="cards"><span class="e">🃏</span>Hahmokortit<small>${nc}/${PACK.characters.length} kerätty</small></button>` : ''}
       <button class="tile" data-g="parent"><span class="e">👨‍👩‍👧</span>Aikuiselle<small>Edistyminen</small></button>
     </div>`;
+  $('#x').onclick = () => go(mainHome);
   $$('[data-ch]').forEach(b => b.onclick = () => go(() => chapterQuiz(b.dataset.ch)));
-  const G = {miss:missQuiz, timeline, whoami, match, exam, bonus:bonusQuiz, cards, parent};
-  $$('[data-g]').forEach(b => b.onclick = () => go(G[b.dataset.g]));
+  const Gm = {miss:missQuiz, timeline, whoami, match, exam, bonus:bonusQuiz, cards, parent};
+  $$('[data-g]').forEach(b => b.onclick = () => go(Gm[b.dataset.g]));
 }
 
-// ---------- KYSYMYSKIERROS ----------
+// ================= KYSYMYSKIERROS =================
 function runQuiz(qs, done){
-  let i = 0, score = 0, combo = 0;
+  let i = 0, score = 0, combo = 0; startEarned = G.earned;
   const show = () => {
     const q = qs[i];
     const opts = q.type === 'tf' ? q.options : shuffle([q.answer, ...q.wrong]);
@@ -376,17 +395,18 @@ function runQuiz(qs, done){
       <div class="qcard"><button class="spk" data-say="${esc(sayT)}" aria-label="Lue ääneen">🔊</button><span class="tag ${q.type==='koe'?'koe':''}">${tag}</span>${body}</div>
       <div class="opts ${q.type==='tf'?'row':''}">${opts.map((o,k) => `<button class="opt" data-k="${k}">${q.type==='tf' ? (o==='Totta'?'👍 ':'👎 ') : ''}${esc(o)}</button>`).join('')}</div>
       <div id="fb"></div>`;
-    $('#x').onclick = () => { if (confirm('Lopetetaanko kierros?')) go(home); };
+    $('#x').onclick = () => { if (confirm('Lopetetaanko kierros?')) { save(); go(packHome); } };
     let answered = false;
     $$('.opt').forEach(b => b.onclick = () => {
       if (answered) return; answered = true;
       const ok = opts[+b.dataset.k] === q.answer;
       $$('.opt').forEach(x => { const v = opts[+x.dataset.k]; if (v === q.answer) x.classList.add('ok'); else if (x !== b) x.classList.add('dim'); });
-      if (ok) { score++; combo++; S.xp += 10 + (combo >= 3 ? 5 : 0); delete S.miss[q.id]; beep(true); }
+      let got = 0;
+      if (ok) { score++; combo++; got = 10 + (combo >= 3 ? 5 : 0); gem(got); delete S.miss[q.id]; beep(true); }
       else { combo = 0; if (!q.bonus) S.miss[q.id] = 1; b.classList.add('no'); shake(b); beep(false); }
       save();
       const comboT = ok && combo >= 3 ? ` <span class="combo">🔥 ${combo} putkeen!</span>` : '';
-      $('#fb').innerHTML = `<div class="fb ${ok?'ok':'no'}"><b>${ok ? pick(PRAISE) : pick(TRY) + ' Oikea vastaus: ' + esc(q.answer)}</b>${comboT}<br>${esc(q.explain)}</div>
+      $('#fb').innerHTML = `<div class="fb ${ok?'ok':'no'}"><b>${ok ? pick(PRAISE) + ' +' + got + ' 💎' : pick(TRY) + ' Oikea vastaus: ' + esc(q.answer)}</b>${comboT}${q.explain ? '<br>' + esc(q.explain) : ''}</div>
         <button class="big" id="nx">${i+1 < qs.length ? 'Seuraava ➜' : 'Katso tulos'}</button>`;
       $('#nx').onclick = () => { i++; if (i < qs.length) go(show); else { touchDay(); save(); go(() => done(score, qs.length)); } };
       $('#fb').scrollIntoView({behavior:'smooth', block:'nearest'});
@@ -398,19 +418,23 @@ function runQuiz(qs, done){
 function starsFor(p){ return p >= .9 ? 3 : p >= .7 ? 2 : p >= .5 ? 1 : 0; }
 
 function resultScreen({emoji, title, line, stars, extra='', again, againLabel='Pelaa uudestaan'}){
-  if (stars >= 2) { confetti(); }
+  if (stars >= 2) confetti();
+  const gained = G.earned - startEarned;
   app.innerHTML = `
     <div class="center">
       <div class="huge">${emoji}</div>
       <h2>${esc(title)}</h2>
       ${stars !== undefined ? `<div class="stars">${starStr(stars)}</div>` : ''}
       <p class="sub" style="font-size:17px">${line}</p>
+      ${gained > 0 ? `<div class="gain">+${gained} 💎 · yhteensä ${G.gems} 💎</div>` : ''}
       ${extra}
     </div>
     <button class="big" id="ag">${againLabel}</button>
+    <button class="big pink" id="pt">🐾 Lemmikille</button>
     <button class="big alt" id="hm">🗺️ Takaisin kartalle</button>`;
   $('#ag').onclick = () => go(again);
-  $('#hm').onclick = () => go(home);
+  $('#pt').onclick = () => go(mainHome);
+  $('#hm').onclick = () => go(packHome);
 }
 
 function chapterQuiz(chId){
@@ -424,22 +448,21 @@ function chapterQuiz(chId){
     S.best[chId] = Math.max(S.best[chId]||0, Math.round(p*100));
     S.stars[chId] = Math.max(S.stars[chId]||0, st);
     let newCards = [];
-    if (st >= 1) ch.cards.forEach(c => { if (!S.cards[c]) { S.cards[c] = 1; newCards.push(c); } });
+    if (st >= 1) (ch.cards||[]).forEach(c => { if (!S.cards[c]) { S.cards[c] = 1; newCards.push(c); } });
     save();
-    const extra = newCards.length ? `<div class="qcard"><b>🃏 Uusi hahmokortti!</b><br>${newCards.map(n => { const c = PACK.characters.find(x=>x.name===n); return (c?c.emoji+' ':'') + esc(n); }).join(', ')}</div>`
-      : st === 0 ? `<p class="small">Tarvitset vähintään puolet oikein saadaksesi tähden ja hahmokortin.</p>` : '';
-    resultScreen({emoji: st===3?'🏆':st>=1?'🎉':'💪', title: ch.title, stars: st,
-      line: `${score} / ${n} oikein`, extra, again: () => chapterQuiz(chId)});
+    const extra = newCards.length ? `<div class="qcard"><b>🃏 Uusi hahmokortti!</b><br>${newCards.map(n => { const c = (PACK.characters||[]).find(x=>x.name===n); return (c?c.emoji+' ':'') + esc(n); }).join(', ')}</div>`
+      : st === 0 ? `<p class="small">Tarvitset vähintään puolet oikein saadaksesi tähden${(ch.cards||[]).length ? ' ja hahmokortin' : ''}.</p>` : '';
+    resultScreen({emoji: st===3?'🏆':st>=1?'🎉':'💪', title: ch.title, stars: st, line: `${score} / ${n} oikein`, extra, again: () => chapterQuiz(chId)});
   });
 }
 
 function missQuiz(){
   const qs = shuffle(Object.keys(S.miss).map(qById).filter(Boolean)).slice(0, 12);
-  if (!qs.length) return home();
+  if (!qs.length) return packHome();
   runQuiz(qs, (score, n) => {
     const left = Object.keys(S.miss).filter(qById).length;
     resultScreen({emoji: left ? '🎯' : '🏆', title: 'Virheiden kertaus', line: `${score} / ${n} oikein. ${left ? `Vielä ${left} kerrattavaa.` : 'Kaikki virheet korjattu!'}`,
-      stars: starsFor(score/n), again: left ? missQuiz : home, againLabel: left ? 'Jatka kertaamista' : 'Valmis!'});
+      stars: starsFor(score/n), again: left ? missQuiz : packHome, againLabel: left ? 'Jatka kertaamista' : 'Valmis!'});
   });
 }
 
@@ -447,7 +470,7 @@ function exam(){
   const koe = CORE.filter(q => q.type === 'koe');
   const others = shuffle(CORE.filter(q => q.type !== 'koe')).slice(0, Math.max(0, 20 - koe.length));
   runQuiz(shuffle([...koe, ...others]), (score, n) => {
-    const p = score/n; S.games.exam = Math.max(S.games.exam||0, Math.round(p*100)); S.xp += 30; save();
+    const p = score/n; S.games.exam = Math.max(S.games.exam||0, Math.round(p*100)); gem(30); save();
     resultScreen({emoji: p>=.85?'🏆':p>=.6?'👍':'📚', title:'Harjoituskoe', stars: starsFor(p),
       line: `${score} / ${n} oikein (${Math.round(p*100)} %)<br>${p>=.85 ? 'Olet valmis kokeeseen!' : p>=.6 ? 'Hyvä! Kertaa vielä virheet.' : 'Kertaa kappaleita ja virheitä, sitten uusi yritys.'}`,
       again: exam});
@@ -457,32 +480,33 @@ function exam(){
 function bonusQuiz(){
   const qs = shuffle(QS.filter(q => q.bonus)).slice(0, 12);
   runQuiz(qs, (score, n) => {
-    const p = score/n; S.games.bonus = Math.max(S.games.bonus||0, Math.round(p*100)); S.xp += 20; save();
+    const p = score/n; S.games.bonus = Math.max(S.games.bonus||0, Math.round(p*100)); gem(20); save();
     resultScreen({emoji: p>=.9?'🏆':'💡', title:'Bonustietoa', stars: starsFor(p),
       line: `${score} / ${n} oikein<br><span class="small">Lue lisää -laatikoiden tietoa – hyvää lisäoppia, mutta ei kokeen pääasiaa.</span>`, again: bonusQuiz});
   });
 }
 
 function finishGame(key, title, score, max, again){
-  const p = score / max; S.games[key] = Math.max(S.games[key]||0, Math.round(p*100)); S.xp += Math.round(p*40); touchDay(); save();
+  const p = score / max; S.games[key] = Math.max(S.games[key]||0, Math.round(p*100)); gem(Math.round(p*40)); touchDay(); save();
   resultScreen({emoji: p>=.9?'🏆':p>=.6?'🎉':'💪', title, stars: starsFor(p), line: `${score} / ${max} pistettä`, again});
 }
+function exitGame(){ if (confirm('Lopetetaanko peli?')) { save(); go(packHome); } }
 
 // ---------- AIKAJANA ----------
 function timeline(){
-  const ROUNDS = 3, PER = 5; let round = 0, mistakes = 0;
+  const ROUNDS = 3, PER = 5; let round = 0, mistakes = 0; startEarned = G.earned;
   const next = () => {
     if (round === ROUNDS) return finishGame('timeline', 'Aikajana', Math.max(0, ROUNDS*PER - mistakes), ROUNDS*PER, timeline);
     const idxs = shuffle(PACK.timeline.map((_,k)=>k)).slice(0, PER).sort((a,b)=>a-b);
     let pos = 0; const pool = shuffle(idxs);
     const draw = () => {
       app.innerHTML = `
-        <div class="top"><button class="back" id="x">✕</button><span class="chip">Kierros ${round+1}/${ROUNDS}</span><span class="chip">❌ ${mistakes}</span></div>
+        <div class="top"><button class="back" id="x">✕</button><span class="chip">Kierros ${round+1}/${ROUNDS}</span><span class="chip" id="mc">❌ ${mistakes}</span></div>
         <h2>📜 Mikä tapahtui ensin?</h2><p class="sub">Napauta tapahtumat oikeaan järjestykseen.</p>
         ${idxs.map((ix,k) => k < pos ? `<div class="slot done"><b>${k+1}</b>${esc(PACK.timeline[ix])}</div>` : `<div class="slot"><b>${k+1}</b>…</div>`).join('')}
         <div class="opts" style="margin-top:14px">${pool.filter(ix => idxs.indexOf(ix) >= pos).map(ix => `<button class="opt" data-ix="${ix}">${esc(PACK.timeline[ix])}</button>`).join('')}</div>
         <div id="fb"></div>`;
-      $('#x').onclick = () => { if (confirm('Lopetetaanko peli?')) go(home); };
+      $('#x').onclick = exitGame;
       if (pos === PER) {
         beep(true);
         $('#fb').innerHTML = `<div class="fb ok"><b>${pick(PRAISE)}</b> Järjestys on oikein.</div><button class="big" id="nx">${round+1<ROUNDS?'Seuraava kierros ➜':'Katso tulos'}</button>`;
@@ -491,7 +515,7 @@ function timeline(){
       }
       $$('[data-ix]').forEach(b => b.onclick = () => {
         if (+b.dataset.ix === idxs[pos]) { pos++; draw(); }
-        else { mistakes++; b.classList.add('no'); shake(b); beep(false); setTimeout(() => b.classList.remove('no'), 500); app.querySelector('.top .chip:last-child').textContent = '❌ ' + mistakes; }
+        else { mistakes++; b.classList.add('no'); shake(b); beep(false); setTimeout(() => b.classList.remove('no'), 500); $('#mc').textContent = '❌ ' + mistakes; }
       });
     };
     draw();
@@ -501,7 +525,7 @@ function timeline(){
 
 // ---------- KUKA MINÄ OLEN ----------
 function whoami(){
-  const ROUNDS = 5; const order = shuffle(PACK.characters).slice(0, ROUNDS); let round = 0, points = 0;
+  const ROUNDS = Math.min(5, PACK.characters.length); const order = shuffle(PACK.characters).slice(0, ROUNDS); let round = 0, points = 0; startEarned = G.earned;
   const next = () => {
     if (round === ROUNDS) return finishGame('whoami', 'Kuka minä olen?', points, ROUNDS*3, whoami);
     const c = order[round]; let ci = 0, done = false;
@@ -510,13 +534,13 @@ function whoami(){
     const draw = (msg='') => {
       const maxP = Math.max(1, 3 - ci);
       app.innerHTML = `
-        <div class="top"><button class="back" id="x">✕</button><span class="chip">Hahmo ${round+1}/${ROUNDS}</span><span class="chip">💎 ${points}</span></div>
+        <div class="top"><button class="back" id="x">✕</button><span class="chip">Hahmo ${round+1}/${ROUNDS}</span><span class="chip">⭐ ${points}</span></div>
         <h2>🕵️ Kuka minä olen?</h2><p class="sub">${done ? '' : `Arvaa nyt: ${maxP} ${maxP===1?'piste':'pistettä'}`}</p>
         ${c.clues.slice(0, ci+1).map((t,k) => `<div class="clue"><i>Vihje ${k+1}</i>${esc(t)}</div>`).join('')}
         ${!done && ci < c.clues.length-1 ? `<button class="big alt" id="more" style="margin:4px 0 14px">💡 Lisää vihje</button>` : '<div style="height:10px"></div>'}
         <div class="opts">${opts.map(o => `<button class="opt ${done && o===c.name?'ok':''} ${disabled.has(o)?'no':''}" data-o="${esc(o)}">${esc(o)}</button>`).join('')}</div>
         <div id="fb">${msg}</div>`;
-      $('#x').onclick = () => { if (confirm('Lopetetaanko peli?')) go(home); };
+      $('#x').onclick = exitGame;
       if (done) { $('#nx').onclick = () => { round++; go(next); }; return; }
       if ($('#more')) $('#more').onclick = () => { ci++; draw(); };
       $$('[data-o]').forEach(b => b.onclick = () => {
@@ -539,7 +563,7 @@ function whoami(){
 function match(){
   const words = PACK.words.filter(w => !w[2]);
   const PER = words.length >= 8 ? 4 : 3, ROUNDS = Math.max(1, Math.min(3, Math.floor(words.length / PER)));
-  const pool = shuffle(words); let round = 0, mistakes = 0;
+  const pool = shuffle(words); let round = 0, mistakes = 0; startEarned = G.earned;
   const next = () => {
     if (round === ROUNDS) return finishGame('match', 'Sanaparit', Math.max(0, ROUNDS*PER - mistakes), ROUNDS*PER, match);
     const set = pool.slice(round*PER, round*PER+PER); const defs = shuffle(set.map((_,k)=>k));
@@ -550,14 +574,14 @@ function match(){
       <div class="match"><div class="col">${set.map((w,k) => `<button class="mt term" data-t="${k}">${esc(w[0])}</button>`).join('')}</div>
       <div class="col">${defs.map(k => `<button class="mt" data-d="${k}">${esc(set[k][1])}</button>`).join('')}</div></div>
       <div id="fb"></div>`;
-    $('#x').onclick = () => { if (confirm('Lopetetaanko peli?')) go(home); };
+    $('#x').onclick = exitGame;
     $$('[data-t]').forEach(b => b.onclick = () => { if (ok.has(+b.dataset.t)) return; $$('[data-t]').forEach(x=>x.classList.remove('sel')); b.classList.add('sel'); sel = +b.dataset.t; });
     $$('[data-d]').forEach(b => b.onclick = () => {
       const d = +b.dataset.d; if (ok.has(d)) return;
       if (sel === null) { shake(b); return; }
       if (d === sel) {
         ok.add(d); beep(true); b.classList.add('ok'); const t = $(`[data-t="${d}"]`); t.classList.remove('sel'); t.classList.add('ok'); sel = null;
-        if (ok.size === PER) { $('#fb').innerHTML = `<div class="fb ok"><b>${pick(PRAISE)}</b> Kaikki parit löytyivät.</div><button class="big" id="nx">${round+1<ROUNDS?'Seuraava kierros ➜':'Katso tulos'}</button>`; $('#nx').onclick = () => { round++; go(next); }; }
+        if (ok.size === set.length) { $('#fb').innerHTML = `<div class="fb ok"><b>${pick(PRAISE)}</b> Kaikki parit löytyivät.</div><button class="big" id="nx">${round+1<ROUNDS?'Seuraava kierros ➜':'Katso tulos'}</button>`; $('#nx').onclick = () => { round++; go(next); }; }
       } else { mistakes++; $('#mc').textContent = mistakes; beep(false); shake(b); }
     });
   };
@@ -572,7 +596,7 @@ function cards(){
     <div class="cards">${PACK.characters.map(c => S.cards[c.name]
       ? `<div class="hc"><div class="e">${c.emoji}</div><b>${esc(c.name)}</b>${c.clues.map(t=>`<p>• ${esc(t)}</p>`).join('')}</div>`
       : `<div class="hc lock"><div class="e">❓</div><b>???</b></div>`).join('')}</div>`;
-  $('#x').onclick = () => go(home);
+  $('#x').onclick = () => go(packHome);
 }
 
 // ---------- AIKUISELLE ----------
@@ -582,8 +606,8 @@ function parent(){
   app.innerHTML = `
     <div class="top"><button class="back" id="x">← Kartta</button></div>
     <h2>👨‍👩‍👧 Aikuiselle</h2>
-    <p class="small">Paras tulos per kappale. Edistyminen tallentuu vain tälle laitteelle.</p>
-    <table>${PACK.chapters.map(c => `<tr><td>${c.no}. ${esc(c.title)}</td><td style="white-space:nowrap;text-align:right">${S.best[c.id]!==undefined?S.best[c.id]+' %':'–'} <span style="color:#c58b00">${starStr(S.stars[c.id]||0)}</span></td></tr>`).join('')}
+    <p class="small">Paras tulos per kappale. Edistyminen tallentuu vain tälle laitteelle. Timantteja kerätty yhteensä ${G.earned} 💎, lemmikin taso ${petLevel()}.</p>
+    <table>${PACK.chapters.map(c => `<tr><td>${c.no ? c.no + '. ' : ''}${esc(c.title)}</td><td style="white-space:nowrap;text-align:right">${S.best[c.id]!==undefined?S.best[c.id]+' %':'–'} <span style="color:#c58b00">${starStr(S.stars[c.id]||0)}</span></td></tr>`).join('')}
       <tr><td>Harjoituskoe</td><td style="text-align:right">${g('exam')}</td></tr>
       <tr><td>Aikajana</td><td style="text-align:right">${g('timeline')}</td></tr>
       <tr><td>Kuka minä olen?</td><td style="text-align:right">${g('whoami')}</td></tr>
@@ -591,12 +615,13 @@ function parent(){
       <tr><td>💡 Bonustietoa</td><td style="text-align:right">${g('bonus')}</td></tr></table>
     <div class="sec">Vielä kertaamatta (${missed.length})</div>
     ${missed.length ? `<div class="mlist">${missed.map(q => `<div>${esc(q.type==='who'?'Kuka sanoi: ”'+q.text+'”':q.text)}<br><b>→ ${esc(q.answer)}</b></div>`).join('')}</div>` : '<p class="small">Ei virheitä jonossa.</p>'}
-    <button class="big alt" id="rs" style="margin-top:24px">Nollaa edistyminen</button>`;
-  $('#x').onclick = () => go(home);
-  $('#rs').onclick = () => { if (confirm('Nollataanko kaikki tähdet, kortit ja pisteet?')) { S = defS(); save(); go(home); } };
+    <button class="big alt" id="rs" style="margin-top:24px">Nollaa tämän kokeen edistyminen</button>
+    <p class="small">Nollaus ei vie timantteja eikä lemmikin tavaroita.</p>`;
+  $('#x').onclick = () => go(packHome);
+  $('#rs').onclick = () => { if (confirm('Nollataanko tämän kokeen tähdet, kortit ja virheet?')) { S = defS(); save(); go(packHome); } };
 }
 
-home();
+mainHome();
 })();
 </script>
 </body>
