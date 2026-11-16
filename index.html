@@ -101,12 +101,11 @@ td{padding:9px 8px;border-bottom:1px solid #eadbb9}
 .stage.sm .st-home{font-size:70px}
 .st-veh{position:absolute;left:10px;bottom:14px;font-size:56px;line-height:1}
 .stage.sm .st-veh{font-size:44px}
-.pet{position:absolute;left:50%;bottom:24px;line-height:1;transform:translateX(-50%);animation:bob 2.4s ease-in-out infinite}
-@keyframes bob{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-7px)}}
-.pet .pa{display:block}
-.pet .ph{position:absolute;top:-.4em;left:50%;transform:translateX(-50%) rotate(-10deg);font-size:.55em}
-.pet .pg{position:absolute;top:.2em;left:50%;transform:translateX(-50%);font-size:.42em}
-.pet .po{position:absolute;bottom:-.16em;left:50%;transform:translateX(-50%);font-size:.42em}
+.pet{position:absolute;left:50%;bottom:6px;line-height:0;transform:translateX(-50%);animation:bob 2.4s ease-in-out infinite}
+.pet svg{display:block;width:100%;height:auto}
+@keyframes bob{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-6px)}}
+.pick svg{display:block;width:78%;height:auto;margin:0 auto}
+.item .e svg{display:block;width:64px;height:64px;margin:0 auto}
 .heart{position:absolute;font-size:30px;pointer-events:none;animation:rise 1.4s ease-out forwards;z-index:3}
 @keyframes rise{to{transform:translateY(-120px) scale(1.4);opacity:0}}
 .petbar{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:12px 2px 4px}
@@ -127,7 +126,7 @@ td{padding:9px 8px;border-bottom:1px solid #eadbb9}
 .item.poor{opacity:.55}
 .msg{min-height:22px;margin:4px 2px 8px;font-weight:700;color:var(--blue2);font-size:15px}
 .namebox{width:100%;font-size:20px;padding:14px;border-radius:16px;border:2px solid #d6c7a8;background:#fff;margin-top:8px}
-.pick{font-size:52px;background:var(--card);border-radius:20px;padding:14px 0;box-shadow:0 3px 0 #d9bf8a}
+.pick{background:var(--card);border-radius:20px;padding:10px 0;box-shadow:0 3px 0 #d9bf8a}
 .pick.sel{outline:4px solid var(--blue);outline-offset:-4px;background:#fff}
 .pk{display:flex;align-items:center;gap:14px;background:var(--card);border-radius:20px;padding:14px;box-shadow:0 3px 0 #d9bf8a;text-align:left;width:100%;margin-bottom:12px}
 .pk .ic{width:56px;height:56px;border-radius:16px;background:var(--blue);display:grid;place-items:center;font-size:30px;flex:none}
@@ -140,7 +139,7 @@ td{padding:9px 8px;border-bottom:1px solid #eadbb9}
 
 <!-- ============ VERSIO: päivitä sama arvo tähän, version.txt:hen ja pakettien ?v=-parametreihin joka julkaisussa ============ -->
 <script>
-window.APP_VERSION = '2026-11-16b';
+window.APP_VERSION = '2026-11-16c';
 (function(){
   // Hakee version.txt:n ohi välimuistin. Jos julkaistu versio on uudempi, ladataan sivu uudella osoitteella (ohittaa vanhan kopion).
   function check(){
@@ -159,7 +158,8 @@ window.APP_VERSION = '2026-11-16b';
 </script>
 
 <!-- ============ SISÄLTÖPAKETIT: yksi tiedosto per koealue ============ -->
-<script src="packs/uskonto3-abraham-joosef.js?v=2026-11-16b"></script>
+<script src="pets.js?v=2026-11-16c"></script>
+<script src="packs/uskonto3-abraham-joosef.js?v=2026-11-16c"></script>
 
 <!-- ============ PELIMOOTTORI (sama kaikille aineille) ============ -->
 <script>
@@ -195,7 +195,7 @@ const SHOP = {
   outfit:{ t:'Asut', i:'👕', items:[
     ['scarf','🧣','Kaulahuivi',100],['tshirt','👕','T-paita',120],['tie','👔','Solmio',150],['jersey','🎽','Urheilupaita',200],
     ['vest','🦺','Huomioliivi',200],['dress','👗','Mekko',250],['coat','🧥','Takki',300],['karate','🥋','Karatepuku',400],
-    ['medal','🏅','Mitali',600],['trophy','🏆','Pokaali',1000]]},
+    ['medal','🏅','Mitali',600],['cape','🦸','Viitta',1000]]},
   glasses:{ t:'Lasit', i:'🕶️', items:[
     ['specs','👓','Silmälasit',150],['shades','🕶️','Aurinkolasit',250],['goggles','🥽','Laskettelulasit',350]]},
   food:{ t:'Ruoat', i:'🍎', items:[
@@ -222,6 +222,9 @@ if (!G) {
   // Siirretään aiemmin kerätyt timantit ja putki vanhoista koekohtaisista tallennuksista
   PACKS.forEach(p => { const s = store.get('kp_'+p.id); if (s) { G.gems += s.xp||0; G.earned += s.xp||0; if (s.streak && (s.streak.n||0) > G.streak.n) G.streak = s.streak; } });
 } else { const d = defG(); G = Object.assign(d, G); G.pet = Object.assign(d.pet, G.pet || {}); }
+// Pokaali vaihtui viitaksi (pokaalia ei voi pukea)
+if (G.owned.trophy) { G.owned.cape = 1; delete G.owned.trophy; }
+if (G.pet.outfit === 'trophy') G.pet.outfit = 'cape';
 const saveG = () => store.set(GKEY, G);
 saveG();
 const petLevel = () => 1 + Math.floor(G.pet.fed / 5);
@@ -291,12 +294,12 @@ function go(fn){ window.scrollTo(0,0); fn(); }
 // ================= LEMMIKKI =================
 function petHTML(small){
   const P = G.pet, it = k => P[k] && ITEM[P[k]] ? ITEM[P[k]].e : '';
-  const size = Math.min(150, (small ? 78 : 92) + (petLevel()-1) * 4);
+  // Lemmikki kasvaa tason mukana
+  const w = small ? Math.min(150, 118 + (petLevel()-1) * 4) : Math.min(190, 150 + (petLevel()-1) * 5);
   return `<div class="stage ${small?'sm':''}"><span class="sun">☀️</span><span class="cloud">☁️</span>
     ${P.home ? `<span class="st-home">${it('home')}</span>` : ''}
     ${P.vehicle ? `<span class="st-veh">${it('vehicle')}</span>` : ''}
-    <div class="pet" style="font-size:${size}px"><span class="pa">${P.animal ? it('animal') : '🥚'}</span>
-      ${P.hat ? `<span class="ph">${it('hat')}</span>` : ''}${P.glasses ? `<span class="pg">${it('glasses')}</span>` : ''}${P.outfit ? `<span class="po">${it('outfit')}</span>` : ''}</div></div>`;
+    <div class="pet" style="width:${w}px">${PetArt.svg(P.animal || 'cat', {hat:P.hat, glasses:P.glasses, outfit:P.outfit})}</div></div>`;
 }
 
 function chooseFirst(){
@@ -306,7 +309,7 @@ function chooseFirst(){
     <div class="top"><span class="chip">💎 ${G.gems}</span></div>
     <h1>Valitse oma lemmikki! 🥚</h1>
     <p class="sub">Kertaamalla saat timantteja 💎. Niillä voit ostaa lemmikillesi ruokaa, hattuja, asuja, kulkuneuvoja ja kodin.</p>
-    <div class="grid" style="grid-template-columns:repeat(4,1fr)">${free.map(r => `<button class="pick" data-a="${r[0]}">${r[1]}</button>`).join('')}</div>
+    <div class="grid" style="grid-template-columns:repeat(4,1fr)">${free.map(r => `<button class="pick" data-a="${r[0]}">${PetArt.svg(r[0], {})}</button>`).join('')}</div>
     <input class="namebox" id="nm" maxlength="16" placeholder="Lemmikin nimi" autocomplete="off">
     <button class="big" id="ok">Valmis!</button><div class="msg" id="msg"></div>`;
   $$('[data-a]').forEach(b => b.onclick = () => { sel = b.dataset.a; $$('[data-a]').forEach(x => x.classList.toggle('sel', x === b)); });
@@ -345,7 +348,8 @@ function shop(cat, msg=''){
     <div class="shop">${c.items.map(r => {
       const it = ITEM[r[0]], own = cat !== 'food' && G.owned[it.id], on = P[cat] === it.id;
       const label = cat === 'food' ? `${it.price} 💎` : on ? 'Käytössä' : own ? 'Käytä' : `${it.price} 💎`;
-      return `<button class="item ${own?'own':''} ${on?'on':''} ${!own && G.gems < it.price ? 'poor':''}" data-i="${it.id}"><span class="e">${it.e}</span><span class="n">${esc(it.name)}</span><span class="p">${label}</span></button>`;
+      const pic = cat === 'animal' ? PetArt.svg(it.id, {}) : (cat === 'hat' || cat === 'glasses' || cat === 'outfit') ? PetArt.svg(P.animal, {[cat]: it.id}, PetArt.CROP[cat]) : it.e;
+      return `<button class="item ${own?'own':''} ${on?'on':''} ${!own && G.gems < it.price ? 'poor':''}" data-i="${it.id}"><span class="e">${pic}</span><span class="n">${esc(it.name)}</span><span class="p">${label}</span></button>`;
     }).join('')}</div>`;
   $('#x').onclick = () => go(mainHome);
   $$('[data-t]').forEach(b => b.onclick = () => shop(b.dataset.t));
