@@ -100,6 +100,7 @@ const PACK = {
   title: "Abrahamista Joosefiin",
   subtitle: "Uskonto, 3. lk · kappaleet 4–10",
   // Kysymysrivit: ["mc"|"koe"|"who", kysymys/lainaus, oikea, [väärät], selitys]  tai  ["tf", väite, true/false, selitys]
+  // q = pääsisältö (leipäteksti + Tärkeää), bonus = Lue lisää -laatikot (eivät vaikuta tähtiin eivätkä harjoituskokeeseen)
   chapters: [
     { id:"k4", no:4, emoji:"⛺", title:"Abraham lähtee matkalle", cards:["Abraham"], q:[
       ["mc","Missä Abraham asui aluksi?","Mesopotamiassa",["Egyptissä","Kanaaninmaassa","Roomassa"],"Abraham asui Mesopotamiassa, ennen kuin Jumala käski hänen lähteä."],
@@ -111,9 +112,10 @@ const PACK = {
       ["tf","Abraham jätti kaiken omaisuutensa kotiin.",false,"Tarua! Abraham otti mukaan kaiken omaisuutensa."],
       ["tf","Matkalla Abraham ja hänen väkensä pystyttivät iltaisin telttansa.",true,"Totta! He vaelsivat päivisin ja pysähtyivät iltaisin."],
       ["mc","Jumala lupasi, että Abrahamin jälkeläisiä tulee enemmän kuin…","hiekanjyviä maassa tai tähtiä taivaalla",["kaloja meressä","puita metsässä","lampaita laitumella"],"Jälkeläisiä tulee enemmän kuin hiekanjyviä tai tähtiä!"],
+      ["koe","Mistä voit päätellä, että Abraham luotti Jumalaan?","Hän lähti matkaan Jumalan käskystä, vaikka hänellä ei ollut omaa lasta",["Hän nauroi Jumalan puheille","Hän jäi kotiin odottamaan","Hän osti lisää kameleita"],"Abraham ihmetteli, miten hänestä voisi tulla suuren kansan isä ilman lasta. Mutta hän luotti Jumalaan ja halusi noudattaa hänen tahtoaan."]
+    ], bonus:[
       ["mc","Miksi paimentolaiset asuivat teltoissa?","He muuttivat usein sinne, mistä karjalle löytyi ruokaa ja vettä",["Teltat olivat kauniimpia kuin talot","He eivät osanneet rakentaa taloja","Kuningas kielsi talot"],"Paimentolaiset kulkivat karjan perässä paikasta toiseen."],
       ["mc","Mitä paimentolaiset tekivät eläinten nahasta, villasta ja luista?","Vaatteita, peitteitä ja telttakankaita",["Leipää","Kolikoita","Laivoja"],"Eläimistä saatiin ruokaa, maitoa ja tarvikkeita."],
-      ["koe","Mistä voit päätellä, että Abraham luotti Jumalaan?","Hän lähti matkaan Jumalan käskystä, vaikka hänellä ei ollut omaa lasta",["Hän nauroi Jumalan puheille","Hän jäi kotiin odottamaan","Hän osti lisää kameleita"],"Abraham ihmetteli, miten hänestä voisi tulla suuren kansan isä ilman lasta. Mutta hän luotti Jumalaan ja halusi noudattaa hänen tahtoaan."]
     ]},
     { id:"k5", no:5, emoji:"👶", title:"Lupaus täyttyy", cards:["Saara","Hagar","Ismael"], q:[
       ["mc","Kuka oli Hagar?","Saaran palvelijatar",["Abrahamin sisko","Jaakobin äiti","Faraon tytär"],"Hagar oli Saaran palvelijatar."],
@@ -127,24 +129,26 @@ const PACK = {
       ["tf","Abraham halusi itse ajaa Ismaelin pois.",false,"Tarua! Saara vaati sitä. Abraham ei olisi halunnut."],
       ["who","Tee niin kuin Saara sanoo. Lähetä Ismael turvallisin mielin pois. Minä huolehdin hänestä.","Jumala",["Hagar","Iisak","Yksi vieraista"],"Jumala lupasi huolehtia Ismaelista."],
       ["mc","Mitä Abraham antoi Hagarille matkaan?","Leipää ja vesileilin",["Kultaa ja hopeaa","Kamelin","Teltan"],"Varhain aamulla Abraham antoi leipää ja vesileilin."],
-      ["mc","Minkä uskonnon kantaisänä Ismaelia pidetään?","Islaminuskon",["Egyptiläisten uskonnon","Paimentolaisten uskonnon","Faraon uskonnon"],"Ismaelia pidetään islaminuskon kantaisänä."],
-      ["mc","Mitä islamin kannattajia kutsutaan?","Muslimeiksi",["Kristityiksi","Paimentolaisiksi","Faraoiksi"],"Islam on maailman toiseksi suurin uskonto kristinuskon jälkeen."],
       ["tf","Abraham sai kaksi poikaa: Ismaelin ja Iisakin.",true,"Totta!"],
       ["koe","Mistä voit päätellä, että Saara ei luottanut Jumalaan?","Hän nauroi, kun vieras sanoi, että hän saa pojan",["Hän leipoi vieraille leipää","Hän meni telttaan","Hän lähti matkaan Abrahamin kanssa"],"Saara nauroi, koska ei uskonut, että Jumalalle kaikki on mahdollista."]
+    ], bonus:[
+      ["mc","Minkä uskonnon kantaisänä Ismaelia pidetään?","Islaminuskon",["Egyptiläisten uskonnon","Paimentolaisten uskonnon","Faraon uskonnon"],"Ismaelia pidetään islaminuskon kantaisänä."],
+      ["mc","Mitä islamin kannattajia kutsutaan?","Muslimeiksi",["Kristityiksi","Paimentolaisiksi","Faraoiksi"],"Islam on maailman toiseksi suurin uskonto kristinuskon jälkeen."],
     ]},
     { id:"k6", no:6, emoji:"🐐", title:"Jaakobin petos", cards:["Iisak","Rebekka","Esau"], q:[
       ["mc","Kenen kanssa Iisak meni naimisiin?","Rebekan",["Saaran","Hagarin","Dinan"],"Iisak ja Rebekka saivat kaksospojat."],
-      ["mc","Kumpi kaksosista oli esikoinen?","Esau",["Jaakob","Joosef","Ismael"],"Esau syntyi ensin, joten hän oli esikoinen."],
+      ["mc","Kumpi kaksosista oli esikoinen?","Esau",["Jaakob","Joosef","Ismael"],"Esikoinen sai nimekseen Esau. Toiselle pojalle annettiin nimeksi Jaakob."],
       ["mc","Millainen Esau oli?","Taitava metsästäjä ja isän suosikki",["Hiljainen ja viihtyi kotona","Äidin suosikki","Unien selittäjä"],"Iisak söi mielellään Esaun tuomaa riistaa."],
       ["mc","Millainen Jaakob oli?","Rauhallinen ja hiljainen, äidilleen rakas",["Taitava metsästäjä","Isän suosikki","Kuningas"],"Jaakob viihtyi kotona."],
-      ["mc","Mitä esikoinen sai isän kuoltua?","Hänestä tuli suvun johtaja ja hän sai kaksinkertaisen perinnön",["Ei mitään","Hänestä tuli farao","Hän sai muuttaa Egyptiin"],"Esikoinen oli perheen vanhin poika."],
-      ["tf","Kanaaninmaassa tytöt perivät yhtä paljon kuin pojat.",false,"Tarua! Tytöt eivät perineet mitään."],
       ["who","Hae minulle kaksi nuorta vuohta. Valmistan niistä isäsi mieliruokaa.","Rebekka",["Iisak","Esau","Saara"],"Rebekka keksi suunnitelman Jaakobin kanssa."],
       ["who","Ääni on Jaakobin ääni, mutta kädet ovat Esaun kädet.","Iisak",["Rebekka","Esau","Abraham"],"Iisak ihmetteli, mutta siunasi Jaakobin."],
       ["mc","Miksi Iisak ei tunnistanut Jaakobia?","Iisak oli melkein sokea ja Jaakobilla oli Esaun vaatteet",["Oli pimeä yö","Jaakob oli naamioitunut eläimeksi","Iisak oli nukkumassa"],"Jaakob puki päälleen Esaun vaatteet."],
       ["tf","Iisak pystyi perumaan siunauksensa.",false,"Tarua! Siunausta ei voinut enää perua."],
       ["mc","Miksi Jaakob lähti pakomatkalle?","Rebekka pelkäsi, että Esau tappaa veljensä",["Hän halusi nähdä Egyptin","Iisak ajoi hänet pois","Hän etsi kadonnutta vuohta"],"Esau oli raivoissaan, joten Rebekka lähetti Jaakobin pois."],
       ["koe","Miksi Rebekka halusi, että Jaakob saa esikoisen oikeudet?","Jaakob oli hänelle hyvin rakas",["Esau pyysi sitä","Jumala käski hänen huijata","Iisak halusi niin"],"Jaakob viihtyi kotona ja oli äidilleen hyvin rakas."]
+    ], bonus:[
+      ["mc","Mitä esikoinen sai isän kuoltua?","Hänestä tuli suvun johtaja ja hän sai kaksinkertaisen perinnön",["Ei mitään","Hänestä tuli farao","Hän sai muuttaa Egyptiin"],"Esikoinen oli perheen vanhin poika."],
+      ["tf","Kanaaninmaassa tytöt perivät yhtä paljon kuin pojat.",false,"Tarua! Tytöt eivät perineet mitään."],
     ]},
     { id:"k7", no:7, emoji:"🤝", title:"Jaakob ja Esau tekevät sovinnon", cards:["Jaakob"], q:[
       ["mc","Missä kaupungissa Jaakob asui monta vuotta?","Harranissa",["Egyptissä","Mesopotamiassa","Jerusalemissa"],"Jaakob asui Harranissa enonsa luona."],
@@ -156,16 +160,15 @@ const PACK = {
       ["mc","Kuinka monta miestä Esaulla oli mukanaan?","Neljäsataa",["Kaksitoista","Seitsemän","Sata"],"Esau tuli 400 aseistautuneen miehen kanssa."],
       ["who","Herra, minä en ansaitse hyvyyttäsi, mutta auta minua.","Jaakob",["Esau","Joosef","Iisak"],"Jaakob rukoili apua Jumalalta."],
       ["mc","Kuinka monta kertaa Jaakob kumarsi Esaun edessä?","Seitsemän",["Kerran","Kolme","Kaksitoista"],"Jaakob kumarsi seitsemän kertaa."],
+      ["koe","Mistä voit päätellä, että Esau ei muistanut pahalla veljeään?","Hän halasi Jaakobia ja alkoi itkeä",["Hän otti lahjat ja lähti","Hän toi 400 miestä","Hän kumarsi seitsemän kertaa"],"Esau ei ollut enää vihainen – hän oli antanut anteeksi."]
+    ], bonus:[
       ["mc","Minkä uuden nimen Jaakob sai painin jälkeen?","Israel",["Egypti","Abraham","Harran"],"Tuntematon mies siunasi Jaakobin ja antoi nimen Israel."],
       ["mc","Mitä jaakopinpaini tarkoittaa nykyään?","Jonkin vaikean asian pohtimista",["Painiottelua","Juoksukilpailua","Unien selittämistä"],"Kun pohtii jotain vaikeaa, sanotaan jaakopinpainiksi."],
-      ["koe","Mistä voit päätellä, että Esau ei muistanut pahalla veljeään?","Hän halasi Jaakobia ja alkoi itkeä",["Hän otti lahjat ja lähti","Hän toi 400 miestä","Hän kumarsi seitsemän kertaa"],"Esau ei ollut enää vihainen – hän oli antanut anteeksi."]
     ]},
     { id:"k8", no:8, emoji:"🐫", title:"Veljet myyvät Joosefin", cards:["Joosef","Ruuben","Juuda"], q:[
       ["mc","Kuinka monta poikaa Jaakobilla oli?","Kaksitoista",["Kaksi","Seitsemän","Kymmenen"],"12 poikaa ja yksi tyttö."],
       ["mc","Kuka oli Jaakobin lempilapsi?","Joosef",["Ruuben","Benjamin","Juuda"],"Jaakob hemmotteli Joosefia monin tavoin."],
       ["tf","Veljet olivat Joosefille kateellisia.",true,"Totta! Koska Jaakob hemmotteli Joosefia, veljet tulivat kateellisiksi."],
-      ["mc","Mitä Joosefin ensimmäisessä unessa tapahtui?","Veljien lyhteet kumartuivat hänen lyhteensä edessä",["Lehmät söivät toisensa","Hän lensi taivaalle","Kaivo täyttyi vedellä"],"Unessa sidottiin viljalyhteitä."],
-      ["mc","Mitkä kumartuivat Joosefin eteen toisessa unessa?","Aurinko, kuu ja yksitoista tähteä",["Seitsemän lehmää","Kaksitoista kamelia","Farao ja hänen vaimonsa"],"Unet suututtivat veljiä entistä enemmän."],
       ["who","Tuolta se unennäkijä tulee.","Veljet",["Jaakob","Farao","Potifar"],"Veljet pilkkasivat Joosefia, kun hän toi heille ruokaa."],
       ["mc","Kuka veljistä halusi säästää Joosefin hengen?","Ruuben",["Juuda","Simeon","Benjamin"],"Ruuben aikoi nostaa Joosefin salaa kaivosta."],
       ["mc","Mihin veljet pudottivat Joosefin?","Tyhjään kaivoon",["Jokeen","Vankilaan","Luolaan"],"Ruuben ehdotti kaivoa, jotta Joosef jäisi henkiin."],
@@ -174,6 +177,9 @@ const PACK = {
       ["mc","Mitä veljet tekivät Joosefin puvulle?","Repivät sen ja sotkivat sen vuohen vereen",["Myivät sen","Polttivat sen","Antoivat sen Benjaminille"],"Näin he huijasivat isäänsä."],
       ["mc","Mitä Jaakob luuli tapahtuneen Joosefille?","Pedot olivat tappaneet hänet",["Hän oli eksynyt","Hän oli muuttanut Egyptiin","Hän oli mennyt naimisiin"],"Jaakob suri rakkainta poikaansa kauan."],
       ["koe","Miksi veljet vihasivat Joosefia?","Jaakob hemmotteli Joosefia, ja Joosef kertoi veljilleen erikoisista unistaan",["Joosef varasti heidän lampaansa","Joosef oli laiska","Joosef muutti pois kotoa"],"Veljet tulivat kateellisiksi, ja unet kuultuaan he vihasivat Joosefia entistä enemmän."]
+    ], bonus:[
+      ["mc","Mitä Joosefin ensimmäisessä unessa tapahtui?","Veljien lyhteet kumartuivat hänen lyhteensä edessä",["Lehmät söivät toisensa","Hän lensi taivaalle","Kaivo täyttyi vedellä"],"Unessa sidottiin viljalyhteitä."],
+      ["mc","Mitkä kumartuivat Joosefin eteen toisessa unessa?","Aurinko, kuu ja yksitoista tähteä",["Seitsemän lehmää","Kaksitoista kamelia","Farao ja hänen vaimonsa"],"Unet suututtivat veljiä entistä enemmän."],
     ]},
     { id:"k9", no:9, emoji:"🐄", title:"Joosef Egyptissä", cards:["Potifar","Farao"], q:[
       ["mc","Kenelle Joosef myytiin orjaksi Egyptissä?","Potifarille",["Faraolle","Juudalle","Kauppiaiden kuninkaalle"],"Potifar oli faraon hoviherra."],
@@ -185,11 +191,12 @@ const PACK = {
       ["who","Hyvien vuosien aikana kannattaa korjata viljaa talteen.","Joosef",["Farao","Potifar","Jaakob"],"Joosef neuvoi faraota varautumaan."],
       ["mc","Mitä farao antoi Joosefille?","Sinettisormuksen, hienot vaatteet ja kultakäädyt",["Kamelin ja teltan","Hopeamaljan","Leipää ja vettä"],"Farao pujotti sormuksen Joosefin sormeen."],
       ["mc","Mikä Joosefista tuli?","Egyptin käskynhaltija",["Farao","Potifarin orja","Paimen"],"Kaikkien Egyptissä oli toteltava Joosefia."],
+      ["koe","Miten Joosefista tuli Egyptin käskynhaltija?","Hän selitti faraon unet ja neuvoi keräämään viljaa talteen",["Hän voitti sodan","Hän osti paikan kullalla","Potifar teki hänestä käskynhaltijan"],"Farao oli tyytyväinen Joosefin selitykseen."],
+      ["mc","Miksi Potifar valitsi Joosefin taloudenhoitajakseen?","Joosef oli ahkera ja palveli isäntäänsä hyvin",["Joosef oli Potifarin sukulainen","Farao käski niin","Joosef osasi lukea"],"Joosef oli ahkera ja luotettava työssään."]
+    ], bonus:[
       ["mc","Mitä sana farao tarkoittaa?","Suuri talo",["Kultainen kuningas","Auringon poika","Niilin herra"],"Farao on egyptin kieltä."],
       ["mc","Kenen poikana egyptiläiset pitivät faraota?","Auringonjumalan",["Kuun","Jaakobin","Abrahamin"],"Ihmiset ajattelivat, että farao on auringonjumalan poika."],
       ["tf","Farao omisti Egyptissä kaiken maan.",true,"Totta! Kaikki egyptiläiset olivat hänen alaisiaan."],
-      ["koe","Miten Joosefista tuli Egyptin käskynhaltija?","Hän selitti faraon unet ja neuvoi keräämään viljaa talteen",["Hän voitti sodan","Hän osti paikan kullalla","Potifar teki hänestä käskynhaltijan"],"Farao oli tyytyväinen Joosefin selitykseen."],
-      ["mc","Miksi Potifar valitsi Joosefin taloudenhoitajakseen?","Joosef oli ahkera ja palveli isäntäänsä hyvin",["Joosef oli Potifarin sukulainen","Farao käski niin","Joosef osasi lukea"],"Joosef oli ahkera ja luotettava työssään."]
     ]},
     { id:"k10", no:10, emoji:"🌾", title:"Joosef antaa anteeksi", cards:["Benjamin"], q:[
       ["mc","Miksi naapurimaista tultiin Egyptiin?","Ostamaan viljaa, koska kaikkialla oli ruuasta pula",["Katsomaan pyramideja","Tapaamaan faraota","Etsimään Joosefia"],"Joosef avasi viljavarastot huonoina vuosina."],
@@ -201,9 +208,10 @@ const PACK = {
       ["who","Jos Benjamin ei palaa kanssamme kotiin, isämme kuolee surusta. Tee minusta orjasi Benjaminin asemasta.","Juuda",["Ruuben","Simeon","Joosef"],"Juuda puhui rohkeasti Joosefille."],
       ["who","Minä olen veljenne. Menkää kotiin hakemaan perheenne ja isämme.","Joosef",["Farao","Juuda","Benjamin"],"Joosef purskahti itkuun ja kertoi, kuka hän on."],
       ["mc","Mitä Joosef pyysi veljiä tekemään?","Hakemaan perheen ja isän asumaan Egyptiin",["Lähtemään pois ikuisesti","Maksamaan viljasta kultaa","Jäämään kaikki vangiksi"],"Joosefin suku muutti Kanaaninmaasta Egyptiin."],
-      ["mc","Mikä oli Jaakobin tyttären nimi?","Dina",["Saara","Rebekka","Hagar"],"Jaakobilla oli 12 poikaa ja tytär Dina."],
       ["tf","Lopulta Joosef antoi veljilleen anteeksi.",true,"Totta!"],
       ["koe","Miksi Joosef ei heti kertonut veljilleen, kuka hän on?","Hän halusi koetella veljiään",["Hän oli unohtanut heidät","Farao kielsi","Hän ei tunnistanut heitä"],"Joosef tunsi veljet heti, mutta halusi koetella heitä. Kun Juuda tarjoutui orjaksi Benjaminin asemasta, Joosef ei enää voinut hillitä itseään."]
+    ], bonus:[
+      ["mc","Mikä oli Jaakobin tyttären nimi?","Dina",["Saara","Rebekka","Hagar"],"Jaakobilla oli 12 poikaa ja tytär Dina."],
     ]}
   ],
   timeline: [
@@ -227,31 +235,32 @@ const PACK = {
     { name:"Abraham", emoji:"⭐", clues:["Asuin Mesopotamiassa ja minulla oli paljon eläimiä.","Olin pitkään murheellinen, koska minulla ei ollut lasta.","Jumala lupasi, että minusta tulee suuren kansan isä.","Poikani ovat Ismael ja Iisak."]},
     { name:"Saara", emoji:"😄", clues:["Olin pitkään ilman lasta.","Ehdotin, että mieheni hankkisi lapsen palvelijattareni kanssa.","Nauroin, kun vieras sanoi, että saan pojan.","Poikani on Iisak."]},
     { name:"Hagar", emoji:"💧", clues:["Olin palvelijatar.","Sain pojan Abrahamin kanssa.","Minut lähetettiin pois leivän ja vesileilin kanssa.","Poikani on Ismael."]},
-    { name:"Ismael", emoji:"🌙", clues:["Isäni oli Abraham.","Äitini oli palvelijatar Hagar.","Jumala lupasi huolehtia minusta.","Minua pidetään islaminuskon kantaisänä."]},
+    { name:"Ismael", emoji:"🌙", clues:["Isäni oli Abraham.","Äitini oli palvelijatar Hagar.","Jumala lupasi huolehtia minusta.","Minut lähetettiin äitini kanssa matkaan leivän ja vesileilin kanssa."]},
     { name:"Iisak", emoji:"🎉", clues:["Isäni järjesti suuret juhlat syntymäni kunniaksi.","Vaimoni oli Rebekka.","Vanhana olin melkein sokea.","Siunasin vahingossa väärän poikani."]},
     { name:"Rebekka", emoji:"🍲", clues:["Mieheni oli Iisak.","Sain kaksospojat.","Hiljainen ja kotona viihtyvä poikani oli minulle hyvin rakas.","Valmistin vuohista ruokaa, jotta Jaakob saisi siunauksen."]},
-    { name:"Esau", emoji:"🦌", clues:["Olin kaksosista vanhempi eli esikoinen.","Olin taitava metsästäjä.","Raivostuin, kun veljeni vei siunaukseni.","Lopulta halasin veljeäni ja annoin anteeksi."]},
-    { name:"Jaakob", emoji:"🤼", clues:["Viihdyin kotona ja olin äidilleni hyvin rakas.","Puin päälleni veljeni vaatteet.","Asuin monta vuotta Harranissa.","Painin yöllä tuntemattoman kanssa ja sain nimen Israel."]},
+    { name:"Esau", emoji:"🦌", clues:["Olin kaksosista esikoinen.","Olin taitava metsästäjä.","Raivostuin, kun veljeni vei siunaukseni.","Lopulta halasin veljeäni ja annoin anteeksi."]},
+    { name:"Jaakob", emoji:"🤼", clues:["Viihdyin kotona ja olin äidilleni hyvin rakas.","Puin päälleni veljeni vaatteet.","Asuin monta vuotta Harranissa.","Kumarsin veljeni edessä seitsemän kertaa."]},
     { name:"Joosef", emoji:"🌾", clues:["Olin isäni suosikki.","Näin unia, joissa muut kumartuivat edessäni.","Veljeni myivät minut orjaksi.","Minusta tuli Egyptin käskynhaltija."]},
     { name:"Ruuben", emoji:"🕳️", clues:["Olin yksi Jaakobin pojista.","En halunnut, että veljeämme tapetaan.","Ehdotin, että hänet heitetään kaivoon – aioin pelastaa hänet myöhemmin."]},
     { name:"Juuda", emoji:"🤲", clues:["Olin yksi Jaakobin pojista.","Ehdotin, että veljemme myydään kauppiaille.","Myöhemmin tarjouduin orjaksi Benjaminin sijasta."]},
     { name:"Benjamin", emoji:"🏺", clues:["Olin Jaakobin pojista nuorin.","Jäin aluksi kotiin isän luo.","Säkistäni löytyi hopeamalja."]},
-    { name:"Farao", emoji:"👑", clues:["Hallitsin Egyptiä.","Ihmiset pitivät minua auringonjumalan poikana.","Näin unta lihavista ja laihoista lehmistä.","Annoin sinettisormukseni Joosefille."]},
+    { name:"Farao", emoji:"👑", clues:["Hoviherrani oli nimeltään Potifar.","Kuulin, että eräs vanki osasi selittää unia.","Näin unta lihavista ja laihoista lehmistä.","Annoin sinettisormukseni Joosefille."]},
     { name:"Potifar", emoji:"🏛️", clues:["Asuin Egyptissä ja olin faraon hoviherra.","Ostin orjan, josta tuli taloudenhoitajani.","Uskoin vaimoani ja heitin palvelijani vankilaan."]}
   ],
+  // Sanaparit: [sana, selitys] – kolmas arvo true = Lue lisää -bonus
   words: [
-    ["Paimentolainen","Kulkee karjan kanssa paikasta toiseen ja asuu teltassa"],
-    ["Esikoinen","Perheen vanhin poika"],
-    ["Farao","Egyptin hallitsija – sana tarkoittaa ”suuri talo”"],
     ["Käskynhaltija","Joosefin tehtävä Egyptissä – kaikkien oli toteltava häntä"],
-    ["Jaakopinpaini","Jonkin vaikean asian pohtiminen"],
     ["Siunaus","Iisak antoi sen Jaakobille, eikä sitä voinut enää perua"],
-    ["Muslimi","Islamin kannattaja"],
-    ["Israel","Jaakobin uusi nimi"],
     ["Kanaaninmaa","Maa, jonka Jumala lupasi Abrahamille"],
     ["Harran","Kaupunki, jossa Jaakob asui monta vuotta"],
     ["Mesopotamia","Abrahamin kotiseutu"],
-    ["Egypti","Maa, jonne Joosef myytiin orjaksi"]
+    ["Egypti","Maa, jonne Joosef myytiin orjaksi"],
+    ["Paimentolainen","Kulkee karjan kanssa paikasta toiseen ja asuu teltassa",true],
+    ["Esikoinen","Perheen vanhin poika",true],
+    ["Farao","Egyptin hallitsija – sana tarkoittaa ”suuri talo”",true],
+    ["Jaakopinpaini","Jonkin vaikean asian pohtiminen",true],
+    ["Muslimi","Islamin kannattaja",true],
+    ["Israel","Jaakobin uusi nimi",true]
   ]
 };
 </script>
@@ -275,13 +284,18 @@ const pick = a => a[Math.random()*a.length|0];
 const PRAISE = ['Hienoa!','Mahtavaa!','Oikein!','Loistavaa!','Juuri niin!','Huippua!'];
 const TRY = ['Melkein!','Ei haittaa!','Ensi kerralla!','Hyvä yritys!'];
 
-// Kysymykset objekteiksi
+// Kysymykset objekteiksi. Tunniste tekstistä, jotta tallennetut virheet pysyvät oikeissa kysymyksissä, vaikka järjestys muuttuu.
 const QS = [];
-PACK.chapters.forEach(ch => ch.q.forEach((r,i) => {
-  const id = ch.id + '-' + i;
-  if (r[0] === 'tf') QS.push({id, ch:ch.id, type:'tf', text:r[1], answer: r[2] ? 'Totta' : 'Tarua', options:['Totta','Tarua'], explain:r[3]||''});
-  else QS.push({id, ch:ch.id, type:r[0], text:r[1], answer:r[2], wrong:r[3], explain:r[4]||''});
-}));
+const addQ = (ch, r, bonus) => {
+  const id = ch.id + ':' + r[1];
+  if (r[0] === 'tf') QS.push({id, ch:ch.id, bonus, type:'tf', text:r[1], answer: r[2] ? 'Totta' : 'Tarua', options:['Totta','Tarua'], explain:r[3]||''});
+  else QS.push({id, ch:ch.id, bonus, type:r[0], text:r[1], answer:r[2], wrong:r[3], explain:r[4]||''});
+};
+PACK.chapters.forEach(ch => { ch.q.forEach(r => addQ(ch, r, false)); (ch.bonus||[]).forEach(r => addQ(ch, r, true)); });
+// Bonussanoista monivalintakysymyksiä
+const BW = PACK.words.filter(w => w[2]);
+BW.forEach(w => QS.push({id:'w:'+w[0], ch:'', bonus:true, type:'mc', text:'Mitä tarkoittaa ”'+w[0]+'”?', answer:w[1], wrong:shuffle(BW.filter(x=>x!==w).map(x=>x[1])).slice(0,3), explain:''}));
+const CORE = QS.filter(q => !q.bonus);
 const qById = id => QS.find(q => q.id === id);
 
 // Ääni & puhe
@@ -339,11 +353,12 @@ function home(){
       <button class="tile" data-g="whoami"><span class="e">🕵️</span>Kuka minä olen?<small>Arvaa vihjeistä</small></button>
       <button class="tile" data-g="match"><span class="e">🧩</span>Sanaparit<small>Mitä sana tarkoittaa?</small></button>
       <button class="tile" data-g="exam"><span class="e">📝</span>Harjoituskoe<small>Kaikki kappaleet</small></button>
+      ${QS.some(q => q.bonus) ? `<button class="tile" data-g="bonus"><span class="e">💡</span>Bonustietoa<small>Lue lisää -laatikot</small></button>` : ''}
       <button class="tile" data-g="cards"><span class="e">🃏</span>Hahmokortit<small>${nc}/${PACK.characters.length} kerätty</small></button>
       <button class="tile" data-g="parent"><span class="e">👨‍👩‍👧</span>Aikuiselle<small>Edistyminen</small></button>
     </div>`;
   $$('[data-ch]').forEach(b => b.onclick = () => go(() => chapterQuiz(b.dataset.ch)));
-  const G = {miss:missQuiz, timeline, whoami, match, exam, cards, parent};
+  const G = {miss:missQuiz, timeline, whoami, match, exam, bonus:bonusQuiz, cards, parent};
   $$('[data-g]').forEach(b => b.onclick = () => go(G[b.dataset.g]));
 }
 
@@ -353,7 +368,7 @@ function runQuiz(qs, done){
   const show = () => {
     const q = qs[i];
     const opts = q.type === 'tf' ? q.options : shuffle([q.answer, ...q.wrong]);
-    const tag = {mc:'Kysymys', tf:'Totta vai tarua?', who:'Kuka sanoi?', koe:'⭐ Koekysymys'}[q.type];
+    const tag = (q.bonus ? '💡 Bonus · ' : '') + {mc:'Kysymys', tf:'Totta vai tarua?', who:'Kuka sanoi?', koe:'⭐ Koekysymys'}[q.type];
     const body = q.type === 'who' ? `<div class="quote">”${esc(q.text)}”</div>` : `<div class="q">${esc(q.text)}</div>`;
     const sayT = (q.type==='who' ? 'Kuka sanoi: ' : q.type==='tf' ? 'Totta vai tarua: ' : '') + q.text + '. ' + (q.type==='tf' ? '' : opts.join('. '));
     app.innerHTML = `
@@ -368,7 +383,7 @@ function runQuiz(qs, done){
       const ok = opts[+b.dataset.k] === q.answer;
       $$('.opt').forEach(x => { const v = opts[+x.dataset.k]; if (v === q.answer) x.classList.add('ok'); else if (x !== b) x.classList.add('dim'); });
       if (ok) { score++; combo++; S.xp += 10 + (combo >= 3 ? 5 : 0); delete S.miss[q.id]; beep(true); }
-      else { combo = 0; S.miss[q.id] = 1; b.classList.add('no'); shake(b); beep(false); }
+      else { combo = 0; if (!q.bonus) S.miss[q.id] = 1; b.classList.add('no'); shake(b); beep(false); }
       save();
       const comboT = ok && combo >= 3 ? ` <span class="combo">🔥 ${combo} putkeen!</span>` : '';
       $('#fb').innerHTML = `<div class="fb ${ok?'ok':'no'}"><b>${ok ? pick(PRAISE) : pick(TRY) + ' Oikea vastaus: ' + esc(q.answer)}</b>${comboT}<br>${esc(q.explain)}</div>
@@ -400,7 +415,7 @@ function resultScreen({emoji, title, line, stars, extra='', again, againLabel='P
 
 function chapterQuiz(chId){
   const ch = PACK.chapters.find(c => c.id === chId);
-  const all = QS.filter(q => q.ch === chId);
+  const all = CORE.filter(q => q.ch === chId);
   const missed = shuffle(all.filter(q => S.miss[q.id]));
   const rest = shuffle(all.filter(q => !S.miss[q.id]));
   const qs = shuffle([...missed, ...rest].slice(0, Math.min(10, all.length)));
@@ -429,13 +444,22 @@ function missQuiz(){
 }
 
 function exam(){
-  const koe = QS.filter(q => q.type === 'koe');
-  const others = shuffle(QS.filter(q => q.type !== 'koe')).slice(0, Math.max(0, 20 - koe.length));
+  const koe = CORE.filter(q => q.type === 'koe');
+  const others = shuffle(CORE.filter(q => q.type !== 'koe')).slice(0, Math.max(0, 20 - koe.length));
   runQuiz(shuffle([...koe, ...others]), (score, n) => {
     const p = score/n; S.games.exam = Math.max(S.games.exam||0, Math.round(p*100)); S.xp += 30; save();
     resultScreen({emoji: p>=.85?'🏆':p>=.6?'👍':'📚', title:'Harjoituskoe', stars: starsFor(p),
       line: `${score} / ${n} oikein (${Math.round(p*100)} %)<br>${p>=.85 ? 'Olet valmis kokeeseen!' : p>=.6 ? 'Hyvä! Kertaa vielä virheet.' : 'Kertaa kappaleita ja virheitä, sitten uusi yritys.'}`,
       again: exam});
+  });
+}
+
+function bonusQuiz(){
+  const qs = shuffle(QS.filter(q => q.bonus)).slice(0, 12);
+  runQuiz(qs, (score, n) => {
+    const p = score/n; S.games.bonus = Math.max(S.games.bonus||0, Math.round(p*100)); S.xp += 20; save();
+    resultScreen({emoji: p>=.9?'🏆':'💡', title:'Bonustietoa', stars: starsFor(p),
+      line: `${score} / ${n} oikein<br><span class="small">Lue lisää -laatikoiden tietoa – hyvää lisäoppia, mutta ei kokeen pääasiaa.</span>`, again: bonusQuiz});
   });
 }
 
@@ -513,7 +537,9 @@ function whoami(){
 
 // ---------- SANAPARIT ----------
 function match(){
-  const ROUNDS = 3, PER = 4; const pool = shuffle(PACK.words); let round = 0, mistakes = 0;
+  const words = PACK.words.filter(w => !w[2]);
+  const PER = words.length >= 8 ? 4 : 3, ROUNDS = Math.max(1, Math.min(3, Math.floor(words.length / PER)));
+  const pool = shuffle(words); let round = 0, mistakes = 0;
   const next = () => {
     if (round === ROUNDS) return finishGame('match', 'Sanaparit', Math.max(0, ROUNDS*PER - mistakes), ROUNDS*PER, match);
     const set = pool.slice(round*PER, round*PER+PER); const defs = shuffle(set.map((_,k)=>k));
@@ -561,7 +587,8 @@ function parent(){
       <tr><td>Harjoituskoe</td><td style="text-align:right">${g('exam')}</td></tr>
       <tr><td>Aikajana</td><td style="text-align:right">${g('timeline')}</td></tr>
       <tr><td>Kuka minä olen?</td><td style="text-align:right">${g('whoami')}</td></tr>
-      <tr><td>Sanaparit</td><td style="text-align:right">${g('match')}</td></tr></table>
+      <tr><td>Sanaparit</td><td style="text-align:right">${g('match')}</td></tr>
+      <tr><td>💡 Bonustietoa</td><td style="text-align:right">${g('bonus')}</td></tr></table>
     <div class="sec">Vielä kertaamatta (${missed.length})</div>
     ${missed.length ? `<div class="mlist">${missed.map(q => `<div>${esc(q.type==='who'?'Kuka sanoi: ”'+q.text+'”':q.text)}<br><b>→ ${esc(q.answer)}</b></div>`).join('')}</div>` : '<p class="small">Ei virheitä jonossa.</p>'}
     <button class="big alt" id="rs" style="margin-top:24px">Nollaa edistyminen</button>`;
