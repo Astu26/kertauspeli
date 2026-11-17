@@ -33,9 +33,10 @@ Näissä aineissa yllä olevia sääntöjä muutetaan näin:
 - Kappaleiden tarinaa ja tapahtumia ei tarvitse osata. Niistä EI tehdä kysymyksiä (ei "Mitä Tom teki?", ei "Kuka sanoi?", ei aikajanaa, ei hahmoja). timeline = [] ja characters = [].
 - Tärkeintä ovat sanat ja kielioppiteemat (esim. olla-verbi, prepositiot, monikko, persoonapronominit, kysymyssanat).
 - Sanat: ota mukaan kaikki kappaleiden sanalistojen ja sanastojen sanat ja fraasit. words: term = vieraan kielen sana, definition = suomennos kirjan mukaan. Ei määräylärajaa.
-- Sanakysymykset molempiin suuntiin: "Mitä on suomeksi 'cat'?" ja "Mitä on englanniksi 'kissa'?". Väärät vaihtoehdot mieluiten muita aineiston sanoja.
+- JOKAISESTA kirjassa erikseen esitellystä sanasta ja fraasista (sanalistat, sanastot, kuvasanastot, lihavoidut uudet sanat) tehdään oma kysymys molempiin suuntiin: "Mitä on suomeksi 'cat'?" ja "Mitä on englanniksi 'kissa'?". Yhtään esiteltyä sanaa ei saa jättää pois, vaikka kysymyksiä tulisi satoja. Kysymysmäärälle ei ole ylärajaa. Väärät vaihtoehdot mieluiten muita aineiston sanoja.
+- Tee sanakysymyksistä omat chapterit kappaleittain (esim. "Sanat: kappale 3"). Jos yhdessä kappaleessa on yli 25 sanaa, jaa ne kahteen tai useampaan chapteriin (esim. "Sanat: kappale 3 (1/2)").
 - Kielioppikysymykset: aukkolauseita kirjan esimerkkien ja sääntöjen pohjalta (esim. "She ___ happy." → is, wrong: am, are, be). Sääntökysymykset kirjan sanoin (esim. "Mitä olla-verbin muotoa käytetään sanan 'I' kanssa?"). Selitys kertoo säännön lyhyesti kirjan mukaan.
-- Jaa chapters kirjan kappaleiden mukaan; jos kielioppiteemalla on oma sivunsa tai laatikkonsa, tee siitä oma chapter (esim. "Olla-verbi"). Kappaleessa 10–20 kysymystä.
+- Jaa chapters kirjan kappaleiden mukaan; jos kielioppiteemalla on oma sivunsa tai laatikkonsa, tee siitä oma chapter (esim. "Olla-verbi"), jossa 10–20 kysymystä. Yllä olevat määrärajat (8–14 kysymystä, 6–12 sanaa) eivät koske kieliä.
 - Älä keksi sanoja tai kielioppisääntöjä, joita aineistossa ei ole.
 
 Jos kuvissa ei ole oppimateriaalia, palauta tyhjä chapters-lista ja kerro syy warnings-listassa.
