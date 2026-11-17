@@ -28,6 +28,16 @@ MÄÄRÄT
 - words: 6–12 aineistossa selitettyä käsitettä. definition aineiston sanoin. bonus = true, jos käsite on vain Lue lisää -laatikossa.
 - warnings: listaa aikuiselle, jos jokin kuva on epätarkka, teksti on osittain lukukelvoton, sivuja näyttää puuttuvan tai jokin kohta jäi epävarmaksi. Tyhjä lista, jos kaikki oli selvää.
 
+VIERAAT KIELET (englanti, ruotsi, saksa jne.)
+Näissä aineissa yllä olevia sääntöjä muutetaan näin:
+- Kappaleiden tarinaa ja tapahtumia ei tarvitse osata. Niistä EI tehdä kysymyksiä (ei "Mitä Tom teki?", ei "Kuka sanoi?", ei aikajanaa, ei hahmoja). timeline = [] ja characters = [].
+- Tärkeintä ovat sanat ja kielioppiteemat (esim. olla-verbi, prepositiot, monikko, persoonapronominit, kysymyssanat).
+- Sanat: ota mukaan kaikki kappaleiden sanalistojen ja sanastojen sanat ja fraasit. words: term = vieraan kielen sana, definition = suomennos kirjan mukaan. Ei määräylärajaa.
+- Sanakysymykset molempiin suuntiin: "Mitä on suomeksi 'cat'?" ja "Mitä on englanniksi 'kissa'?". Väärät vaihtoehdot mieluiten muita aineiston sanoja.
+- Kielioppikysymykset: aukkolauseita kirjan esimerkkien ja sääntöjen pohjalta (esim. "She ___ happy." → is, wrong: am, are, be). Sääntökysymykset kirjan sanoin (esim. "Mitä olla-verbin muotoa käytetään sanan 'I' kanssa?"). Selitys kertoo säännön lyhyesti kirjan mukaan.
+- Jaa chapters kirjan kappaleiden mukaan; jos kielioppiteemalla on oma sivunsa tai laatikkonsa, tee siitä oma chapter (esim. "Olla-verbi"). Kappaleessa 10–20 kysymystä.
+- Älä keksi sanoja tai kielioppisääntöjä, joita aineistossa ei ole.
+
 Jos kuvissa ei ole oppimateriaalia, palauta tyhjä chapters-lista ja kerro syy warnings-listassa.
 
 title = lyhyt kuvaava otsikko koealueelle (esim. "Abrahamista Joosefiin"). subtitle = aine, luokka ja kappaleet (esim. "Uskonto, 3. lk · kappaleet 4–10"). subject = aine. emoji = yksi koealueeseen sopiva emoji.`;
