@@ -17,6 +17,7 @@ KYSYMYSTYYPIT
 - "koe": kuten mc, mutta kirjan Tehtävät-osion tietokysymys.
 - "who": "Kuka sanoi?". text = repliikki tai lainaus aineistosta ilman lainausmerkkejä, answer = puhuja, wrong = 3 muuta aineiston henkilöä.
 - "tf": totta vai tarua -väite. answer = "Totta" tai "Tarua", wrong = []. Selitys alkaa "Totta!" tai "Tarua!".
+- "write": lapsi kirjoittaa vastauksen itse (vain vieraissa kielissä). answer = oikea vastaus tarkalleen kirjan kirjoitusasussa, wrong = muut hyväksyttävät vastaukset (esim. toinen kirjan antama suomennos), yleensä []. Vastauksen pitää olla lyhyt: yksi sana, fraasi tai aukkoon tuleva sana.
 - source: lyhyt viite, mistä kohta löytyy (esim. "s. 17, Tärkeää" tai "kuva 3, Lue lisää"). Tämä näytetään vain aikuiselle tarkistusta varten.
 
 MÄÄRÄT
@@ -32,8 +33,9 @@ VIERAAT KIELET (englanti, ruotsi, saksa jne.)
 Näissä aineissa yllä olevia sääntöjä muutetaan näin:
 - Kappaleiden tarinaa ja tapahtumia ei tarvitse osata. Niistä EI tehdä kysymyksiä (ei "Mitä Tom teki?", ei "Kuka sanoi?", ei aikajanaa, ei hahmoja). timeline = [] ja characters = [].
 - Tärkeintä ovat sanat ja kielioppiteemat (esim. olla-verbi, prepositiot, monikko, persoonapronominit, kysymyssanat).
-- Sanat: ota mukaan kaikki kappaleiden sanalistojen ja sanastojen sanat ja fraasit. words: term = vieraan kielen sana, definition = suomennos kirjan mukaan. Ei määräylärajaa.
+- Sanat: ota mukaan kaikki kappaleiden sanalistojen ja sanastojen sanat ja fraasit. words: term = vieraan kielen sana tai fraasi, definition = pelkkä suomennos kirjan mukaan (esim. "kissa", "hän (pojasta)"), ei selityksiä eikä esimerkkilauseita, koska lapsi kirjoittaa sen itse. Kieliopin käsitteitä (esim. "adjektiivi") ei laiteta words-listaan. Ei määräylärajaa.
 - JOKAISESTA kirjassa erikseen esitellystä sanasta ja fraasista (sanalistat, sanastot, kuvasanastot, lihavoidut uudet sanat) tehdään oma kysymys molempiin suuntiin: "Mitä on suomeksi 'cat'?" ja "Mitä on englanniksi 'kissa'?". Yhtään esiteltyä sanaa ei saa jättää pois, vaikka kysymyksiä tulisi satoja. Kysymysmäärälle ei ole ylärajaa. Väärät vaihtoehdot mieluiten muita aineiston sanoja.
+- Kirjoittaminen: tee sanakysymyksistä noin puolet tyypillä "write" (esim. text "Kirjoita englanniksi: kissa", answer "cat"; text "Kirjoita suomeksi: cat", answer "kissa"), loput monivalintoina. Myös kielioppiaukkoja voi tehdä write-tyyppinä (text "She ___ happy.", answer "is").
 - Tee sanakysymyksistä omat chapterit kappaleittain (esim. "Sanat: kappale 3"). Jos yhdessä kappaleessa on yli 25 sanaa, jaa ne kahteen tai useampaan chapteriin (esim. "Sanat: kappale 3 (1/2)").
 - Kielioppikysymykset: aukkolauseita kirjan esimerkkien ja sääntöjen pohjalta (esim. "She ___ happy." → is, wrong: am, are, be). Sääntökysymykset kirjan sanoin (esim. "Mitä olla-verbin muotoa käytetään sanan 'I' kanssa?"). Selitys kertoo säännön lyhyesti kirjan mukaan.
 - Jaa chapters kirjan kappaleiden mukaan; jos kielioppiteemalla on oma sivunsa tai laatikkonsa, tee siitä oma chapter (esim. "Olla-verbi"), jossa 10–20 kysymystä. Yllä olevat määrärajat (8–14 kysymystä, 6–12 sanaa) eivät koske kieliä.
@@ -47,7 +49,7 @@ const Q = {
   type: 'object', additionalProperties: false,
   required: ['type', 'text', 'answer', 'wrong', 'explain', 'source'],
   properties: {
-    type: { type: 'string', enum: ['mc', 'koe', 'who', 'tf'] },
+    type: { type: 'string', enum: ['mc', 'koe', 'who', 'tf', 'write'] },
     text: { type: 'string' },
     answer: { type: 'string' },
     wrong: { type: 'array', items: { type: 'string' } },

@@ -3,12 +3,12 @@
 const clean = s => String(s == null ? '' : s).trim();
 function row(q) {
   if (q.type === 'tf') return ['tf', clean(q.text), clean(q.answer).toLowerCase().startsWith('tot'), clean(q.explain)];
-  return [q.type, clean(q.text), clean(q.answer), (q.wrong || []).map(clean).filter(Boolean).slice(0, 3), clean(q.explain)];
+  return [q.type, clean(q.text), clean(q.answer), (q.wrong || []).map(clean).filter(Boolean).slice(0, q.type === 'write' ? 6 : 3), clean(q.explain)];
 }
 function validQ(q) {
   if (!q || !clean(q.text) || !clean(q.answer)) return false;
-  if (!['mc', 'koe', 'who', 'tf'].includes(q.type)) return false;
-  if (q.type !== 'tf' && (q.wrong || []).filter(x => clean(x)).length < 2) return false;
+  if (!['mc', 'koe', 'who', 'tf', 'write'].includes(q.type)) return false;
+  if (q.type !== 'tf' && q.type !== 'write' && (q.wrong || []).filter(x => clean(x)).length < 2) return false;
   return true;
 }
 export function slug(s) {
